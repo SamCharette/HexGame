@@ -8,16 +8,16 @@ namespace Engine
 {
     public class Game
     {
-        public Guid Id { get; set; } // Simply here for when recording games
-        public DateTime StartedOn { get; set; }
-        public DateTime EndedOn { get; set; }
+        public Guid Id { get; private set; } // Simply here for when recording games
+        public DateTime StartedOn { get; private set; }
+        public DateTime EndedOn { get; private set; }
 
-        public Board Board { get; set; }
+        public Board Board { get; private set; }
 
-        public Player Player1 { get; set; }
-        public Player Player2 { get; set; }
+        public Player Player1 { get; private set; }
+        public Player Player2 { get; private set; }
 
-        public List<Move> Moves { get; set; }
+        public List<Move> Moves { get; private set; }
 
         public Game(int size, Player player1, Player player2)
         {
@@ -28,6 +28,11 @@ namespace Engine
             Player2 = player2;
 
             Moves = new List<Move>();
+        }
+
+        public void EndGame()
+        {
+            EndedOn = DateTime.Now;
         }
     }
 }

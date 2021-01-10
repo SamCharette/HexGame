@@ -6,8 +6,8 @@ namespace Engine.ValueTypes
 {
     public struct Coordinates
     {
-        public int X;
-        public int Y;
+        public int X { get; private set; }
+        public int Y { get; private set; }
 
         public Coordinates(int x, int y)
         {

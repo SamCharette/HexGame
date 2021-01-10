@@ -6,8 +6,8 @@ namespace Engine
 {
     public class Board
     {
-        public List<Hex> Hexes;
-        public int Size;
+        public List<Hex> Hexes { get; private set; }
+        public int Size { get; private set; }
 
         public Board(int size)
         {

@@ -6,8 +6,8 @@ namespace Engine.ValueTypes
 {
     public struct Move
     {
-        public Coordinates Coordinates;
-        public PlayerNumber PlayerNumber;
+        public Coordinates Coordinates { get; private set; }
+        public PlayerNumber PlayerNumber { get; private set; }
 
         public Move(int x, int y, PlayerNumber playerNumber)
         {
@@ -15,9 +15,15 @@ namespace Engine.ValueTypes
             PlayerNumber = playerNumber;
         }
 
+        public Move(Coordinates coordinates, PlayerNumber playerNumber)
+        {
+            Coordinates = coordinates;
+            PlayerNumber = playerNumber;
+        }
+
         public override string ToString()
         {
-            return Coordinates.ToString() + " : Player #" + PlayerNumber;
+            return Coordinates + " : Player #" + PlayerNumber;
         }
     }
 }
