@@ -19,7 +19,7 @@ namespace Engine
         public PlayerNumber Winner { get; private set; }
         public List<Move> Moves { get; private set; }
 
-        private Coordinates _concessionMove = new Coordinates(-1, -1);
+        private readonly Coordinates _concessionMove = new Coordinates(-1, -1);
 
         public Game(int size, Player player1, Player player2)
         {
