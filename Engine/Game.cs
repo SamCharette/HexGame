@@ -32,26 +32,34 @@ namespace Engine
 
         public void StartGame()
         {
-            var concedeMove = new Coordinates(-1, -1);
-
-            var currentPlayer = Player1;
-
-            var lastMove = concedeMove;
-            do
+            try
             {
-                lastMove = currentPlayer.MakeMove(lastMove);
-                if (!lastMove.Equals(concedeMove) && Board.HexAt(lastMove).Owner == PlayerNumber.Unowned)
-                {
-                    Board.Hexes.FirstOrDefault(x => x.Coordinates.Equals(lastMove))?.SetOwner(Player1.Number);
-                    Moves.Add(new Move(lastMove, currentPlayer.Number));
-                }
-                else
-                {
-                    Winner = SwitchCurrentPlayer(currentPlayer).Number;
-                }
-                currentPlayer = SwitchCurrentPlayer(currentPlayer);
+                var concedeMove = new Coordinates(-1, -1);
 
-            } while (!lastMove.Equals(concedeMove) && Winner == PlayerNumber.Unowned);
+                var currentPlayer = Player1;
+
+                var lastMove = concedeMove;
+                do
+                {
+                    lastMove = currentPlayer.MakeMove(lastMove);
+                    if (!lastMove.Equals(concedeMove) && Board.HexAt(lastMove).Owner == PlayerNumber.Unowned)
+                    {
+                        Board.Hexes.FirstOrDefault(x => x.Coordinates.Equals(lastMove))?.SetOwner(Player1.Number);
+                        Moves.Add(new Move(lastMove, currentPlayer.Number));
+                    }
+                    else
+                    {
+                        Winner = SwitchCurrentPlayer(currentPlayer).Number;
+                    }
+                    currentPlayer = SwitchCurrentPlayer(currentPlayer);
+
+                } while (!lastMove.Equals(concedeMove) && Winner == PlayerNumber.Unowned);
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
 
             EndGame();
         }
