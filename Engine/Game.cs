@@ -18,6 +18,8 @@ namespace Engine
         public PlayerNumber Winner { get; private set; }
         public List<Move> Moves { get; private set; }
 
+        private Coordinates _concessionMove = new Coordinates(-1, -1);
+
         public Game(int size, Player player1, Player player2)
         {
             Id = Guid.NewGuid();
@@ -34,15 +36,13 @@ namespace Engine
         {
             try
             {
-                var concedeMove = new Coordinates(-1, -1);
-
                 var currentPlayer = Player1;
 
-                var lastMove = concedeMove;
+                var lastMove = _concessionMove;
                 do
                 {
                     lastMove = currentPlayer.MakeMove(lastMove);
-                    if (!lastMove.Equals(concedeMove) && Board.HexAt(lastMove).Owner == PlayerNumber.Unowned)
+                    if (IsValidMove(lastMove))
                     {
                         Board.Hexes.FirstOrDefault(x => x.Coordinates.Equals(lastMove))?.SetOwner(Player1.Number);
                         Moves.Add(new Move(lastMove, currentPlayer.Number));
@@ -53,7 +53,7 @@ namespace Engine
                     }
                     currentPlayer = SwitchCurrentPlayer(currentPlayer);
 
-                } while (!lastMove.Equals(concedeMove) && Winner == PlayerNumber.Unowned);
+                } while (!lastMove.Equals(_concessionMove) && Winner == PlayerNumber.Unowned);
 
             }
             catch (Exception e)
@@ -62,6 +62,14 @@ namespace Engine
             }
 
             EndGame();
+        }
+
+        private bool IsValidMove(Coordinates coords)
+        {
+            return !coords.Equals(new Coordinates(-1, -1))
+                   && Board.HexAt(coords).Owner == PlayerNumber.Unowned
+                   && coords.X > 0 && coords.X <= Board.Size
+                   && coords.Y > 0 && coords.Y <= Board.Size;
         }
 
         public TimeSpan GameLength()
