@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using NUnit.Framework;
 using Engine;
@@ -35,6 +36,13 @@ namespace Engine.Tests
             // Assert
             Assert.AreEqual(0, unownedSpaces);
             Assert.AreEqual(121, game.Moves.Count);
+        }
+
+        [Test]
+        public void StartGame_ShouldFailWithException_WhenBoardIsTooSmall()
+        {
+            Assert.Throws<ArgumentException>( () => new Game(1, new Player(PlayerNumber.FirstPlayer, 1), new Player(PlayerNumber.SecondPlayer, 1)));
+            
         }
     }
 }
