@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Engine.ValueTypes;
 
 namespace Engine
@@ -8,6 +9,7 @@ namespace Engine
     {
         public List<Hex> Hexes { get; private set; }
         public int Size { get; private set; }
+
 
         public Board(int size)
         {
@@ -31,5 +33,10 @@ namespace Engine
                 }
             }
         }
+        public Hex HexAt(Coordinates coordinates)
+        {
+            return Hexes.FirstOrDefault(x => x.Coordinates.X == coordinates.X && x.Coordinates.Y == coordinates.Y);
+        }
+
     }
 }

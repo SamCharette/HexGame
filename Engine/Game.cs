@@ -40,7 +40,7 @@ namespace Engine
             do
             {
                 lastMove = currentPlayer.MakeMove(lastMove);
-                if (!lastMove.Equals(concedeMove))
+                if (!lastMove.Equals(concedeMove) && Board.HexAt(lastMove).Owner == PlayerNumber.Unowned)
                 {
                     Board.Hexes.FirstOrDefault(x => x.Coordinates.Equals(lastMove))?.SetOwner(Player1.Number);
                     Moves.Add(new Move(lastMove, currentPlayer.Number));
