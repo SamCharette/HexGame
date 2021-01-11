@@ -34,13 +34,13 @@ namespace Engine
                     return moveToMake.Coordinates;
                 }
 
-                return ConcedeGame();
             }
             catch (Exception e)
             {
-                return ConcedeGame();
+                Console.WriteLine(e);
             }
 
+            return ConcedeGame();
         }
 
         private Coordinates ConcedeGame()
