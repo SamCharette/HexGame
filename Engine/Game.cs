@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -66,10 +67,9 @@ namespace Engine
 
         private bool IsValidMove(Coordinates coords)
         {
-            return !coords.Equals(new Coordinates(-1, -1))
-                   && Board.HexAt(coords).Owner == PlayerNumber.Unowned
-                   && coords.X > 0 && coords.X <= Board.Size
-                   && coords.Y > 0 && coords.Y <= Board.Size;
+            var hexOnBoard = Board.HexAt(coords);
+
+            return hexOnBoard != null && hexOnBoard.Owner == PlayerNumber.Unowned;
         }
 
         public TimeSpan GameLength()
