@@ -15,6 +15,7 @@ namespace Engine
         public Board Board { get; private set; }
         public Player Player1 { get; private set; }
         public Player Player2 { get; private set; }
+        public PlayerNumber Winner { get; private set; }
         public List<Move> Moves { get; private set; }
 
         public Game(int size, Player player1, Player player2)
@@ -24,6 +25,7 @@ namespace Engine
             Board = new Board(size);
             Player1 = player1;
             Player2 = player2;
+            Winner = PlayerNumber.Unowned;
 
             Moves = new List<Move>();
         }
@@ -43,9 +45,13 @@ namespace Engine
                     Board.Hexes.FirstOrDefault(x => x.Coordinates.Equals(lastMove))?.SetOwner(Player1.Number);
                     Moves.Add(new Move(lastMove, currentPlayer.Number));
                 }
+                else
+                {
+                    Winner = SwitchCurrentPlayer(currentPlayer).Number;
+                }
                 currentPlayer = SwitchCurrentPlayer(currentPlayer);
 
-            } while (!lastMove.Equals(concedeMove));
+            } while (!lastMove.Equals(concedeMove) && Winner == PlayerNumber.Unowned);
 
             EndGame();
         }
