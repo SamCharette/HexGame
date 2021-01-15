@@ -17,10 +17,9 @@ namespace Engine.Tests
         public void StartGame_ShouldFillTheBoard_WhenRandomPlayersPlay()
         {
             // Assemble
-            var game = new Game(
-                11, 
-                new Player(PlayerNumber.FirstPlayer, 11), 
-                new Player(PlayerNumber.SecondPlayer, 11));
+            var player1 = new Player(PlayerNumber.FirstPlayer, 11);
+            var player2 = new Player(PlayerNumber.SecondPlayer, 11);
+            var game = new Game(11, player1, player2);
             Assume.That(game.Moves.Count, Is.EqualTo(0));
             Assume.That(
                 game.Board.Hexes.Count(x => x.Owner == PlayerNumber.Unowned), 
@@ -41,8 +40,29 @@ namespace Engine.Tests
         [Test]
         public void StartGame_ShouldFailWithException_WhenBoardIsTooSmall()
         {
-            Assert.Throws<ArgumentException>( () => new Game(1, new Player(PlayerNumber.FirstPlayer, 1), new Player(PlayerNumber.SecondPlayer, 1)));
-            
+            var size = 11;
+            var player1 = new Player(PlayerNumber.FirstPlayer, size);
+            var player2 = new Player(PlayerNumber.SecondPlayer, size);
+
+            Assert.Throws<ArgumentException>( () => new Game(1, player1, player2));
+        }
+
+        [Test]
+        public void StartGame_ShouldFailWithException_WhenPlayer1IsNull()
+        {
+            var size = 11;
+            var player2 = new Player(PlayerNumber.SecondPlayer, size);
+
+            Assert.Throws<ArgumentException>(() => new Game(1, null, player2));
+        }
+
+        [Test]
+        public void StartGame_ShouldFailWithException_WhenPlayer2IsNull()
+        {
+            var size = 11;
+            var player1 = new Player(PlayerNumber.FirstPlayer, size);
+
+            Assert.Throws<ArgumentException>(() => new Game(1, player1, null));
         }
     }
 }
