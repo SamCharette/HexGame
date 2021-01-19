@@ -2,17 +2,17 @@
 using System.Linq;
 using Engine.ValueTypes;
 
-namespace Engine
+namespace Engine.Players
 {
-    public class Player
+    public class Player : PlayerBase<PlayerConstructorArguments>, IPlayer
     {
         public PlayerNumber Number { get; private set; }
         private Board Board;
 
-        public Player(PlayerNumber number, int size)
+        public Player(PlayerConstructorArguments args) : base(args)
         {
-            Number = number;
-            Board = new Board(size);
+            Number = args.PlayerNumber;
+            Board = new Board(args.BoardSize);
         }
 
         public Coordinates MakeMove(Coordinates opponentMove)
