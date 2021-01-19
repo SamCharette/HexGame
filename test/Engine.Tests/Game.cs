@@ -1,8 +1,7 @@
 using System;
 using System.Linq;
-using NUnit.Framework;
-using Engine;
 using Engine.ValueTypes;
+using NUnit.Framework;
 
 namespace Engine.Tests
 {
