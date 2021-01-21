@@ -10,7 +10,7 @@ namespace Engine.Tests
     public class PlayerTypesTests
     {
         [Test]
-        public void GetPlayerTypes_ShouldGetOneType_BecauseThereIsOnlyOneType()
+        public void GetPlayerTypes_ShouldGetTwoTypes_BecauseThereIsOnlyOneType()
         {
             // Assemble
 
