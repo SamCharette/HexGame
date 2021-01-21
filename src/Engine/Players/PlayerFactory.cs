@@ -1,18 +1,14 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using Microsoft.VisualBasic.CompilerServices;
 
 namespace Engine.Players
 {
     public class PlayerFactory
     {
         public List<PlayerType> PlayerTypes { get; private set; }
-        public Assembly Assembly { get; private set; }
+        private Assembly Assembly { get; set; }
         public PlayerFactory(Assembly assembly = null)
         {
             Assembly = assembly ?? Assembly.GetExecutingAssembly();
@@ -36,7 +32,11 @@ namespace Engine.Players
         {
             if (PlayerTypes.Any(x => x.Name == playerType))
             {
-                var type = PlayerTypes.FirstOrDefault(x => x.Name == playerType).Type;
+                var type = PlayerTypes.FirstOrDefault(x => x.Name == playerType)?.Type;
+                if (type == null)
+                {
+                    return null;
+                }
                 dynamic player = (PlayerBase<PlayerConstructorArguments>)Activator.CreateInstance(type, args);
                 return player;
             }
