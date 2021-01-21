@@ -3,7 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using Microsoft.VisualBasic.CompilerServices;
 
 namespace Engine.Players
 {
@@ -18,18 +20,28 @@ namespace Engine.Players
         }
         private List<PlayerType> GetPlayerTypes()
         {
-            var iterations = 5;
-            var pType = typeof(Player);
-            return Enumerable.Range(1, iterations)
-                .SelectMany(i => Assembly.GetExecutingAssembly().GetTypes()
-                    .Where(t => t.IsClass && t != pType
-                                          && pType.IsAssignableFrom(t))
-                    .Select(t => new PlayerType( t.Name, t.ReflectedType))).ToList();
+            var pType = typeof(IPlayer);
+
+            return  Assembly
+                    .GetTypes()
+                    .Where(t => 
+                        t.IsClass 
+                        && t != pType
+                        && pType.IsAssignableFrom(t))
+                    .Select(t => new PlayerType( t.Name, t))
+                    .ToList();
         }
 
-        public static Player CreatePlayerOfType(string playerType)
+        public PlayerBase<PlayerConstructorArguments> CreatePlayerOfType(string playerType, PlayerConstructorArguments args)
         {
-            throw new NotImplementedException();
+            if (PlayerTypes.Any(x => x.Name == playerType))
+            {
+                var type = PlayerTypes.FirstOrDefault(x => x.Name == playerType).Type;
+                dynamic player = (PlayerBase<PlayerConstructorArguments>)Activator.CreateInstance(type, args);
+                return player;
+            }
+
+            return null;
         }
 
         public class PlayerType

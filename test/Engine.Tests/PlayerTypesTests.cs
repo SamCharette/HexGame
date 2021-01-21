@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Reflection;
 using Engine.Players;
+using Engine.ValueTypes;
 using NUnit.Framework;
 
 namespace Engine.Tests
@@ -12,20 +13,28 @@ namespace Engine.Tests
         public void GetPlayerTypes_ShouldGetOneType_BecauseThereIsOnlyOneType()
         {
             // Assemble
-            var assemblies = Assembly
-                .GetExecutingAssembly()
-                .GetReferencedAssemblies()
-                .Select(Assembly.Load)
-                .Where(x => x.GetName() == "Engine")
-                .ToList();
-
 
             // Act
             var factory = new PlayerFactory();
 
             // Assert
-            Assert.AreEqual(1, assemblies.Count());
-            Assert.AreEqual(1, factory.PlayerTypes.Count());
+            Assert.AreEqual(2, factory.PlayerTypes.Count());
+        }
+
+        [Test]
+        public void CreatePlayerOfType_ShouldCreatePlayer_WhenWeAskForPlayer()
+        {
+            // Assemble
+            var factory = new PlayerFactory();
+            var args = new PlayerConstructorArguments();
+            args.BoardSize = 11;
+            args.PlayerNumber = PlayerNumber.FirstPlayer;
+
+            // Act
+            var player = factory.CreatePlayerOfType("TestPlayer", args);
+
+            // Assert
+            Assert.AreEqual(player.GetType(), typeof(TestPlayer));
         }
     }
 }
