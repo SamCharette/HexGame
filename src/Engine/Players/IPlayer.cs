@@ -12,7 +12,7 @@ namespace Engine.Players
 
     public abstract class PlayerBase<T>
     {
-        public PlayerBase(T parameters)
+        protected PlayerBase(T parameters)
         {
 
         }

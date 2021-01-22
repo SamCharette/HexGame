@@ -31,4 +31,7 @@ Global
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9CE40204-501B-491C-940A-F4BEFFDCA79D}
 	EndGlobalSection
+	GlobalSection(NDepend) = preSolution
+		Project = ".\HexGame.ndproj"
+	EndGlobalSection
 EndGlobal
