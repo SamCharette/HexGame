@@ -6,10 +6,10 @@ using Engine.ValueTypes;
 namespace Engine.Players
 {
 
-    public abstract class PlayerBase
+    public abstract class BasePlayer
     {
         public PlayerNumber Number { get; protected set; }
-        protected PlayerBase(PlayerConstructorArguments parameters)
+        protected BasePlayer(PlayerConstructorArguments parameters)
         {
 
         }

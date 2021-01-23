@@ -6,7 +6,7 @@ using Engine.ValueTypes;
 
 namespace Engine.Players
 {
-    public class TestPlayer : PlayerBase
+    public class TestPlayer : BasePlayer
     {
         public List<Coordinates> Moves { get; set; } = new List<Coordinates>();
 
