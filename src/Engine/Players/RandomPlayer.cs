@@ -6,7 +6,6 @@ namespace Engine.Players
 {
     public class RandomPlayer : PlayerBase<PlayerConstructorArguments>
     {
-        public PlayerNumber Number { get; private set; }
         private Board Board;
 
         public RandomPlayer(PlayerConstructorArguments args) : base(args)

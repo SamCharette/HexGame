@@ -15,8 +15,8 @@ namespace Engine
         public DateTime StartedOn { get; private set; }
         public DateTime? EndedOn { get; private set; }
         public Board Board { get; private set; }
-        public RandomPlayer Player1 { get; private set; }
-        public RandomPlayer Player2 { get; private set; }
+        public PlayerBase<PlayerConstructorArguments> Player1 { get; private set; }
+        public PlayerBase<PlayerConstructorArguments> Player2 { get; private set; }
         public PlayerNumber Winner { get; private set; }
         public List<Move> Moves { get; private set; }
 
@@ -84,7 +84,7 @@ namespace Engine
             EndedOn = DateTime.Now;
         }
 
-        private RandomPlayer SwitchCurrentPlayer(RandomPlayer lastPlayer)
+        private PlayerBase<PlayerConstructorArguments> SwitchCurrentPlayer(PlayerBase<PlayerConstructorArguments> lastPlayer)
         {
             return lastPlayer.Number == PlayerNumber.FirstPlayer ? Player2 : Player1;
         }
