@@ -21,8 +21,7 @@ namespace Engine.Tests
             var newConfig = Configuration.GetConfiguration(json);
 
             // assert
-            Assert.IsInstanceOf<Configuration>(newConfig);
-            Assert.AreEqual(0, newConfig.Options.Count);
+            Assert.IsNull(newConfig);
         }
 
         [Test]

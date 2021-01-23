@@ -29,7 +29,7 @@ namespace Engine.Players
             }
             catch (Exception e)
             {
-                return new Configuration("", "");
+                return null;
             }
         }
     }
