@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Engine.ValueTypes
 {
-    public struct Move
+    public readonly struct Move
     {
-        public Coordinates Coordinates { get; private set; }
-        public PlayerNumber PlayerNumber { get; private set; }
+        public readonly Coordinates Coordinates { get; }
+        public readonly PlayerNumber PlayerNumber { get; }
 
         public Move(int x, int y, PlayerNumber playerNumber)
         {
@@ -24,6 +22,16 @@ namespace Engine.ValueTypes
         public override string ToString()
         {
             return Coordinates + " : Player #" + PlayerNumber;
+        }
+
+        public bool Equals(Move other)
+        {
+            return Coordinates.Equals(other.Coordinates) && PlayerNumber == other.PlayerNumber;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Coordinates, (int) PlayerNumber);
         }
     }
 }

@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using Engine.Players;
 using Engine.ValueTypes;
 
 namespace Engine
@@ -14,14 +15,14 @@ namespace Engine
         public DateTime StartedOn { get; private set; }
         public DateTime? EndedOn { get; private set; }
         public Board Board { get; private set; }
-        public Player Player1 { get; private set; }
-        public Player Player2 { get; private set; }
+        public RandomPlayer Player1 { get; private set; }
+        public RandomPlayer Player2 { get; private set; }
         public PlayerNumber Winner { get; private set; }
         public List<Move> Moves { get; private set; }
 
         private readonly Coordinates _concessionMove = new Coordinates(-1, -1);
 
-        public Game(int size, Player player1, Player player2)
+        public Game(int size, RandomPlayer player1, RandomPlayer player2)
         {
             Id = Guid.NewGuid();
             StartedOn = DateTime.Now;
@@ -83,7 +84,7 @@ namespace Engine
             EndedOn = DateTime.Now;
         }
 
-        private Player SwitchCurrentPlayer(Player lastPlayer)
+        private RandomPlayer SwitchCurrentPlayer(RandomPlayer lastPlayer)
         {
             return lastPlayer.Number == PlayerNumber.FirstPlayer ? Player2 : Player1;
         }
