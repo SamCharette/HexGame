@@ -5,14 +5,11 @@ using Engine.ValueTypes;
 
 namespace Engine.Players
 {
-    public interface IPlayer
-    {
-        public Coordinates MakeMove(Coordinates opponentMove);
-    }
 
-    public abstract class PlayerBase<T> : IPlayer
+    public abstract class BasePlayer
     {
-        protected PlayerBase(T parameters)
+        public PlayerNumber Number { get; protected set; }
+        protected BasePlayer(PlayerConstructorArguments parameters)
         {
 
         }

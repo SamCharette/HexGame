@@ -15,14 +15,14 @@ namespace Engine
         public DateTime StartedOn { get; private set; }
         public DateTime? EndedOn { get; private set; }
         public Board Board { get; private set; }
-        public RandomPlayer Player1 { get; private set; }
-        public RandomPlayer Player2 { get; private set; }
+        public BasePlayer Player1 { get; private set; }
+        public BasePlayer Player2 { get; private set; }
         public PlayerNumber Winner { get; private set; }
         public List<Move> Moves { get; private set; }
 
         private readonly Coordinates _concessionMove = new Coordinates(-1, -1);
 
-        public Game(int size, RandomPlayer player1, RandomPlayer player2)
+        public Game(int size, BasePlayer player1, BasePlayer player2)
         {
             Id = Guid.NewGuid();
             StartedOn = DateTime.Now;
@@ -84,7 +84,7 @@ namespace Engine
             EndedOn = DateTime.Now;
         }
 
-        private RandomPlayer SwitchCurrentPlayer(RandomPlayer lastPlayer)
+        private BasePlayer SwitchCurrentPlayer(BasePlayer lastPlayer)
         {
             return lastPlayer.Number == PlayerNumber.FirstPlayer ? Player2 : Player1;
         }
