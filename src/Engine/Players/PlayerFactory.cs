@@ -16,7 +16,7 @@ namespace Engine.Players
         }
         private List<PlayerType> GetPlayerTypes()
         {
-            var pType = typeof(IPlayer);
+            var pType = typeof(PlayerBase<PlayerConstructorArguments>);
 
             return  Assembly
                     .GetTypes()
