@@ -10,7 +10,8 @@ namespace Engine.Tests
     public class PlayerTypesTests
     {
         [Test]
-        public void GetPlayerTypes_ShouldGetTwoTypes_BecauseThereIsOnlyOneType()
+        // TODO : No clue how to really do this dynamically.  Delete?
+        public void GetPlayerTypes_ShouldGetThreeTypes_BecauseThereAreThreeTypes()
         {
             // Assemble
 
@@ -18,7 +19,7 @@ namespace Engine.Tests
             var factory = new PlayerFactory();
 
             // Assert
-            Assert.AreEqual(2, factory.PlayerTypes.Count());
+            Assert.AreEqual(3, factory.PlayerTypes.Count());
         }
 
         [Test]

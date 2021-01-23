@@ -4,18 +4,18 @@ using Engine.ValueTypes;
 
 namespace Engine.Players
 {
-    public class Player : PlayerBase<PlayerConstructorArguments>, IPlayer
+    public class RandomPlayer : PlayerBase<PlayerConstructorArguments>
     {
         public PlayerNumber Number { get; private set; }
         private Board Board;
 
-        public Player(PlayerConstructorArguments args) : base(args)
+        public RandomPlayer(PlayerConstructorArguments args) : base(args)
         {
             Number = args.PlayerNumber;
             Board = new Board(args.BoardSize);
         }
 
-        public Coordinates MakeMove(Coordinates opponentMove)
+        public override Coordinates MakeMove(Coordinates opponentMove)
         {
             try
             {

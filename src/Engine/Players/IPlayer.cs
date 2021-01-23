@@ -10,12 +10,14 @@ namespace Engine.Players
         public Coordinates MakeMove(Coordinates opponentMove);
     }
 
-    public abstract class PlayerBase<T>
+    public abstract class PlayerBase<T> : IPlayer
     {
         protected PlayerBase(T parameters)
         {
 
         }
+
+        public abstract Coordinates MakeMove(Coordinates opponentMove);
     }
 
     public class PlayerConstructorArguments

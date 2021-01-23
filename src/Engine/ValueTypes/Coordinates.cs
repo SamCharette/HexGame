@@ -15,6 +15,12 @@ namespace Engine.ValueTypes
             Y = y;
         }
 
+        public Coordinates(Coordinates coordsToCopy)
+        {
+            X = coordsToCopy.X;
+            Y = coordsToCopy.Y;
+        }
+
         public override string ToString()
         {
             return "(" + X + "," + Y + ")";
