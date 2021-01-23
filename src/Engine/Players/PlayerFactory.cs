@@ -16,7 +16,7 @@ namespace Engine.Players
         }
         private List<PlayerType> GetPlayerTypes()
         {
-            var pType = typeof(PlayerBase<PlayerConstructorArguments>);
+            var pType = typeof(PlayerBase);
 
             return  Assembly
                     .GetTypes()
@@ -28,7 +28,7 @@ namespace Engine.Players
                     .ToList();
         }
 
-        public PlayerBase<PlayerConstructorArguments> CreatePlayerOfType(string playerType, PlayerConstructorArguments args)
+        public PlayerBase CreatePlayerOfType(string playerType, PlayerConstructorArguments args)
         {
             if (PlayerTypes.Any(x => x.Name == playerType))
             {
@@ -37,7 +37,7 @@ namespace Engine.Players
                 {
                     return null;
                 }
-                dynamic player = (PlayerBase<PlayerConstructorArguments>)Activator.CreateInstance(type, args);
+                dynamic player = (PlayerBase)Activator.CreateInstance(type, args);
                 return player;
             }
 

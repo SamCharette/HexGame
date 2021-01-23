@@ -4,7 +4,7 @@ using Engine.ValueTypes;
 
 namespace Engine.Players
 {
-    public class RandomPlayer : PlayerBase<PlayerConstructorArguments>
+    public class RandomPlayer : PlayerBase
     {
         private Board Board;
 
