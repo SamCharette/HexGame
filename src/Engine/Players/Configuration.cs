@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Serialization;
 
 namespace Engine.Players
 {
@@ -20,8 +22,15 @@ namespace Engine.Players
 
         public static Configuration GetConfiguration(string jsonData)
         {
-            var data = JsonConvert.DeserializeObject<Configuration>(jsonData);
-            return data;
+            try
+            {
+                var data = JsonConvert.DeserializeObject<Configuration>(jsonData);
+                return data;
+            }
+            catch (Exception e)
+            {
+                return new Configuration("", "");
+            }
         }
     }
 }

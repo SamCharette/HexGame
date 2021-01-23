@@ -17,8 +17,12 @@ namespace Engine.Tests
             // assemble
             var json = "no json here";
 
-            // act & assert
-            Assert.Throws<JsonReaderException>(() => Configuration.GetConfiguration(json));
+            // act
+            var newConfig = Configuration.GetConfiguration(json);
+
+            // assert
+            Assert.IsInstanceOf<Configuration>(newConfig);
+            Assert.AreEqual(0, newConfig.Options.Count);
         }
 
         [Test]

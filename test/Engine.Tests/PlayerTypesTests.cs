@@ -27,9 +27,7 @@ namespace Engine.Tests
         {
             // Assemble
             var factory = new PlayerFactory();
-            var args = new PlayerConstructorArguments();
-            args.BoardSize = 11;
-            args.PlayerNumber = PlayerNumber.FirstPlayer;
+            var args = new PlayerConstructorArguments(11, PlayerNumber.FirstPlayer);
 
             // Act
             var player = factory.CreatePlayerOfType("TestPlayer", args);
