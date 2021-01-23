@@ -25,17 +25,81 @@ namespace Engine
 
         private void SetUp()
         {
-            for (var y = 1; y <= Size; y++)
+            for (var y = 0; y < Size; y++)
             {
-                for (var x = 1; x <= Size; x++)
+                for (var x = 0; x < Size; x++)
                 {
-                    Hexes.Add(new Hex(x, y, PlayerNumber.Unowned));
+                    Hexes.Add(new Hex(x, y));
                 }
             }
         }
         public Hex HexAt(Coordinates coordinates)
         {
-            return Hexes.FirstOrDefault(x => x.Coordinates.X == coordinates.X && x.Coordinates.Y == coordinates.Y);
+            return HexAt(coordinates.X, coordinates.Y);
+        }
+
+        public Hex HexAt(int x, int y)
+        {
+            return Hexes.FirstOrDefault(hex => hex.X == x && hex.Y == y);
+        }
+
+        public List<Hex> GetNeighboursOf(Coordinates coordinates)
+        {
+            return GetNeighboursOf(coordinates.X, coordinates.Y);
+        }
+        public List<Hex> GetNeighboursOf(int x, int y)
+        {
+            var neighbours = new List<Hex>();
+            var hex = HexAt(x, y);
+
+            if (hex == null) return neighbours; 
+
+            AddNeighbourIfItExists(
+                hex.X, 
+                hex.Y - 1, 
+                neighbours);
+            AddNeighbourIfItExists(
+                hex.X + 1, 
+                hex.Y - 1, 
+                neighbours);
+            AddNeighbourIfItExists(
+                hex.X + 1, 
+                hex.Y, 
+                neighbours);
+            AddNeighbourIfItExists(
+                hex.X, 
+                hex.Y + 1, 
+                neighbours);
+            AddNeighbourIfItExists(
+                hex.X - 1, 
+                hex.Y + 1, 
+                neighbours);
+            AddNeighbourIfItExists(
+                hex.X - 1, 
+                hex.Y, 
+                neighbours);
+
+            return neighbours;
+
+        }
+
+        public List<Hex> GetFriendlyNeighboursOf(int x, int y)
+        {
+            var hex = HexAt(x, y);
+
+            if (hex == null) return new List<Hex>();
+
+            return GetNeighboursOf(x, y).Where(otherHex => otherHex.Owner == hex.Owner).ToList();
+
+        }
+
+        private void AddNeighbourIfItExists(int x, int y, List<Hex> neighbours)
+        {
+            var hex = HexAt(x, y);
+            if (hex != null)
+            {
+                neighbours.Add(hex);
+            }
         }
 
     }
