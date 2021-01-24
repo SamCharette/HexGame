@@ -144,6 +144,61 @@ namespace Engine
             hex.SetOwner(PlayerNumber.Unowned);
         }
 
+        public bool AreConnected(Hex start, Hex finish)
+        {
+            var visited = new HashSet<Hex>();
+
+            return AreConnected(start, finish, visited);
+        }
+
+        private bool AreConnected(Hex start, Hex finish, HashSet<Hex> visited)
+        {
+            if (start == null || finish == null)
+            {
+                return false;
+            }
+
+            if (start.Owner != finish.Owner)
+            {
+                return false;
+            }
+
+            if (start.Equals(finish))
+            {
+                return true;
+            }
+
+            var friendlyNeighbours = GetFriendlyNeighboursOf(start);
+            if (friendlyNeighbours.Any(x => x.Equals(finish)))
+            {
+                return true;
+            }
+            
+            // set up the new fringes, which are friendly neighbours not already visited
+            HashSet<Hex> fringes = new HashSet<Hex>();
+            friendlyNeighbours
+                .Where(x => !visited.Contains(x))
+                .ToList()
+                .ForEach(x => fringes.Add(x));
+
+            visited.Add(start);
+
+            while (fringes.Any())
+            {
+                var hex = fringes.FirstOrDefault();
+                visited.Add(hex);
+                if (AreConnected(hex, finish, visited))
+                {
+                    return true;
+                }
+
+                fringes.Remove(hex);
+            
+            }
+
+            return false;
+            
+        }
 
     }
 }

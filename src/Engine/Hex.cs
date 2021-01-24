@@ -45,12 +45,12 @@ namespace Engine
 
         protected bool Equals(Hex other)
         {
-            return Coordinates.Equals(other.Coordinates);
+            return Coordinates.Equals(other.Coordinates) && Owner == other.Owner;
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Coordinates);
+            return HashCode.Combine(Coordinates, Owner);
         }
     }
 }

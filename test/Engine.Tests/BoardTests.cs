@@ -168,5 +168,142 @@ namespace Engine.Tests
 
         }
 
+        [Test]
+        public void AreConnected_ShouldReturnTrue_WhenSameOwnerAndNeighbours()
+        {
+            // Assemble
+            var board = new Board(11);
+            var hex1 = board.HexAt(3, 3);
+            var hex2 = board.HexAt(3, 4);
+            hex1.SetOwner(PlayerNumber.FirstPlayer);
+            hex2.SetOwner(PlayerNumber.FirstPlayer);
+
+            // Act
+            var areConnected = board.AreConnected(hex1,hex2);
+
+            // Assert
+            Assert.IsTrue(areConnected);
+        }
+
+        [Test]
+        public void AreConnected_ShouldReturnTrue_WhenConnectedViaMultipleHexes()
+        {
+            // Assemble
+            var board = new Board(11);
+            var hex1 = board.HexAt(3, 3);
+            var hex2 = board.HexAt(3, 4);
+            var hex3 = board.HexAt(3, 5);
+            hex1.SetOwner(PlayerNumber.FirstPlayer);
+            hex2.SetOwner(PlayerNumber.FirstPlayer);
+            hex3.SetOwner(PlayerNumber.FirstPlayer);
+
+            // Act
+            var areConnected = board.AreConnected(hex1, hex3);
+
+            // Assert
+            Assert.IsTrue(areConnected);
+        }
+
+        [Test]
+        public void AreConnected_ShouldReturnTrue_WhenConnectedViaMultipleHexesAgain()
+        {
+            // Assemble
+            var board = new Board(11);
+            var hex1 = board.HexAt(3, 3);
+            var hex2 = board.HexAt(3, 4);
+            var hex3 = board.HexAt(3, 5);
+            var hex4 = board.HexAt(3, 6);
+            var hex5 = board.HexAt(3, 7);
+            hex1.SetOwner(PlayerNumber.FirstPlayer);
+            hex2.SetOwner(PlayerNumber.FirstPlayer);
+            hex3.SetOwner(PlayerNumber.FirstPlayer);
+            hex4.SetOwner(PlayerNumber.FirstPlayer);
+            hex5.SetOwner(PlayerNumber.FirstPlayer);
+
+            // Act
+            var areConnected = board.AreConnected(hex1, hex5);
+
+            // Assert
+            Assert.IsTrue(areConnected);
+        }
+
+        [Test]
+        public void AreConnected_ShouldReturnFalse_WhenThereIsOneHexInTheWay()
+        {
+            // Assemble
+            var board = new Board(11);
+            var hex1 = board.HexAt(3, 3);
+            var hex2 = board.HexAt(3, 4);
+            var hex3 = board.HexAt(3, 5);
+            var hex4 = board.HexAt(3, 6);
+            var hex5 = board.HexAt(3, 7);
+            hex1.SetOwner(PlayerNumber.FirstPlayer);
+            hex2.SetOwner(PlayerNumber.FirstPlayer);
+            hex3.SetOwner(PlayerNumber.SecondPlayer);
+            hex4.SetOwner(PlayerNumber.FirstPlayer);
+            hex5.SetOwner(PlayerNumber.FirstPlayer);
+
+            // Act
+            var areConnected = board.AreConnected(hex1, hex5);
+
+            // Assert
+            Assert.False(areConnected);
+        }
+
+        [Test]
+        public void AreConnected_ShouldReturnTrue_WhenSameHex()
+        {
+            // Assemble
+            var board = new Board(11);
+            var hex = board.HexAt(3, 3);
+            hex.SetOwner(PlayerNumber.FirstPlayer);
+
+            // Act
+            var areConnected = board.AreConnected(hex, hex);
+
+            // Assert
+            Assert.IsTrue(areConnected);
+        }
+
+        [Test]
+        public void AreConnected_ShouldReturnFalse_WhenEitherAreNull()
+        {
+            // Assemble
+            var board = new Board(11);
+            var hex1 = board.HexAt(3, 3);
+            var hex2 = board.HexAt(-1, -1);
+
+            // Act
+            var test1 = board.AreConnected(hex1, hex2);
+            var test2 = board.AreConnected(hex2, hex1);
+            var test3 = board.AreConnected(hex1, null);
+            var test4 = board.AreConnected(null, hex1);
+
+            // Assert
+            Assert.IsFalse(test1);
+            Assert.IsFalse(test2);
+            Assert.IsFalse(test3);
+            Assert.IsFalse(test4);
+
+        }
+
+
+        [Test]
+        public void AreConnected_ShouldReturnFalse_WhenTheySimplyAreNotConnected()
+        {
+            // Assemble
+            var board = new Board(11);
+            var hex1 = board.HexAt(3, 3);
+            var hex2 = board.HexAt(3, 4);
+            hex1.SetOwner(PlayerNumber.FirstPlayer);
+            hex2.SetOwner(PlayerNumber.SecondPlayer);
+
+            // Act
+            var areConnected = board.AreConnected(hex1, hex2);
+
+            // Assert
+            Assert.IsFalse(areConnected);
+        }
+
     }
 }
