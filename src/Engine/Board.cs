@@ -172,8 +172,14 @@ namespace Engine
         {
             if (player == PlayerNumber.Unowned) return false;
 
-            var startingHexes = GetHexesOwnedBy(player).Where(x => IsStartHexForPlayer(x, player)).ToList();
-            var endingHexes = GetHexesOwnedBy(player).Where(x => IsEndHexForPlayer(x, player)).ToList();
+            var startingHexes = 
+                GetHexesOwnedBy(player)
+                    .Where(x => IsStartHexForPlayer(x, player))
+                    .ToList();
+            var endingHexes = 
+                GetHexesOwnedBy(player)
+                    .Where(x => IsEndHexForPlayer(x, player))
+                    .ToList();
 
             if (!startingHexes.Any() || !endingHexes.Any()) return false;
 
