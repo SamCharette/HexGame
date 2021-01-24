@@ -168,6 +168,24 @@ namespace Engine
             return hex.X == Size - 1;
         }
 
+        public bool DoesWinningPathExistForPlayer(PlayerNumber player)
+        {
+            if (player == PlayerNumber.Unowned) return false;
+
+            var startingHexes = GetHexesOwnedBy(player).Where(x => IsStartHexForPlayer(x, player)).ToList();
+            var endingHexes = GetHexesOwnedBy(player).Where(x => IsEndHexForPlayer(x, player)).ToList();
+
+            if (!startingHexes.Any() || !endingHexes.Any()) return false;
+
+            return (
+                from start 
+                    in startingHexes 
+                from end 
+                    in endingHexes 
+                where AreConnected(start, end) select start)
+                .Any();
+        }
+
         public bool AreConnected(Hex start, Hex finish)
         {
             var visited = new HashSet<Hex>();
