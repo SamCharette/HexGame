@@ -144,6 +144,30 @@ namespace Engine
             hex.SetOwner(PlayerNumber.Unowned);
         }
 
+        public bool IsStartHexForPlayer(Hex hex, PlayerNumber player)
+        {
+            if (!Hexes.Contains(hex)) return false;
+
+            if (player == PlayerNumber.FirstPlayer)
+            {
+                return hex.Y == 0;
+            }
+
+            return hex.X == 0;
+        }
+
+        public bool IsEndHexForPlayer(Hex hex, PlayerNumber player)
+        {
+            if (!Hexes.Contains(hex)) return false;
+
+            if (player == PlayerNumber.FirstPlayer)
+            {
+                return hex.Y == Size - 1;
+            }
+
+            return hex.X == Size - 1;
+        }
+
         public bool AreConnected(Hex start, Hex finish)
         {
             var visited = new HashSet<Hex>();

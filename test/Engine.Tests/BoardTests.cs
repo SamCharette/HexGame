@@ -305,5 +305,89 @@ namespace Engine.Tests
             Assert.IsFalse(areConnected);
         }
 
+        [Test]
+        public void IsStartingHexForPlayer_ShouldReturnTrue_IfPlayer1AndYIsZero()
+        {
+            // Assemble
+            var board = new Board(11);
+            var hex = board.HexAt(5, 0);
+
+            // Act
+            var isStartHex = board.IsStartHexForPlayer(hex, PlayerNumber.FirstPlayer);
+
+            // Assert
+            Assert.IsTrue(isStartHex);
+        }
+
+        [Test]
+        public void IsStartingHexForPlayer_ShouldReturnTrue_IfPlayer2AndXIsZero()
+        {
+            // Assemble
+            var board = new Board(11);
+            var hex = board.HexAt( 0, 5);
+
+            // Act
+            var isStartHex = board.IsStartHexForPlayer(hex, PlayerNumber.SecondPlayer);
+
+            // Assert
+            Assert.IsTrue(isStartHex);
+        }
+
+        [Test]
+        public void IsStartingHexForPlayer_ShouldReturnFalse_HexIsNotOnTheBoard()
+        {
+            // Assemble
+            var board = new Board(11);
+            var hex = new Hex(-1, 55);
+
+            // Act
+            var isStartHex = board.IsStartHexForPlayer(hex, PlayerNumber.SecondPlayer);
+
+            // Assert
+            Assert.False(isStartHex);
+        }
+
+        [Test]
+        public void IsEndingHexForPlayer_ShouldReturnTrue_IfPlayer1AndYIsAppropriate()
+        {
+            // Assemble
+            var board = new Board(11);
+            var hex = board.HexAt(5, 10);
+
+            // Act
+            var isStartHex = board.IsEndHexForPlayer(hex, PlayerNumber.FirstPlayer);
+
+            // Assert
+            Assert.IsTrue(isStartHex);
+        }
+
+        [Test]
+        public void IsEndingHexForPlayer_ShouldReturnTrue_IfPlayer2AndXIsAppropriate()
+        {
+            // Assemble
+            var board = new Board(11);
+            var hex = board.HexAt(10, 5);
+
+            // Act
+            var isStartHex = board.IsEndHexForPlayer(hex, PlayerNumber.SecondPlayer);
+
+            // Assert
+            Assert.IsTrue(isStartHex);
+        }
+
+        [Test]
+        public void IsEndingHexForPlayer_ShouldReturnFalse_HexIsNotOnTheBoard()
+        {
+            // Assemble
+            var board = new Board(11);
+            var hex = new Hex(-1, 55);
+
+            // Act
+            var isStartHex = board.IsEndHexForPlayer(hex, PlayerNumber.SecondPlayer);
+
+            // Assert
+            Assert.False(isStartHex);
+        }
+
     }
 }
