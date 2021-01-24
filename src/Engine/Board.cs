@@ -153,33 +153,14 @@ namespace Engine
 
         private bool AreConnected(Hex start, Hex finish, HashSet<Hex> visited)
         {
-            if (start == null || finish == null)
-            {
-                return false;
-            }
-
-            if (start.Owner != finish.Owner)
-            {
-                return false;
-            }
+            if (IsBadCallToAreConnected(start, finish)) return false;
 
             if (start.Equals(finish))
             {
                 return true;
             }
-
-            var friendlyNeighbours = GetFriendlyNeighboursOf(start);
-            if (friendlyNeighbours.Any(x => x.Equals(finish)))
-            {
-                return true;
-            }
             
-            // set up the new fringes, which are friendly neighbours not already visited
-            HashSet<Hex> fringes = new HashSet<Hex>();
-            friendlyNeighbours
-                .Where(x => !visited.Contains(x))
-                .ToList()
-                .ForEach(x => fringes.Add(x));
+            var fringes = GetFringes(start, visited);
 
             visited.Add(start);
 
@@ -200,5 +181,29 @@ namespace Engine
             
         }
 
+        private static bool IsBadCallToAreConnected(Hex start, Hex finish)
+        {
+            if (start == null || finish == null)
+            {
+                return true;
+            }
+
+            if (start.Owner != finish.Owner)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        private HashSet<Hex> GetFringes(Hex start, HashSet<Hex> visited)
+        {
+            HashSet<Hex> fringes = new HashSet<Hex>();
+            GetFriendlyNeighboursOf(start)
+                .Where(x => !visited.Contains(x))
+                .ToList()
+                .ForEach(x => fringes.Add(x));
+            return fringes;
+        }
     }
 }
