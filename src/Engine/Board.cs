@@ -43,9 +43,9 @@ namespace Engine
             return Hexes.FirstOrDefault(hex => hex.X == x && hex.Y == y);
         }
 
-        public List<Hex> GetNeighboursOf(Coordinates coordinates)
+        public List<Hex> GetNeighboursOf(Hex hex)
         {
-            return GetNeighboursOf(coordinates.X, coordinates.Y);
+            return GetNeighboursOf(hex.X, hex.Y);
         }
         public List<Hex> GetNeighboursOf(int x, int y)
         {
@@ -86,21 +86,64 @@ namespace Engine
         public List<Hex> GetFriendlyNeighboursOf(int x, int y)
         {
             var hex = HexAt(x, y);
+            return GetFriendlyNeighboursOf(hex);
 
+        }
+
+        public List<Hex> GetFriendlyNeighboursOf(Hex hex)
+        {
             if (hex == null) return new List<Hex>();
 
-            return GetNeighboursOf(x, y).Where(otherHex => otherHex.Owner == hex.Owner).ToList();
+            return GetNeighboursOf(hex).Where(otherHex => otherHex.Owner == hex.Owner).ToList();
 
+        }
+
+        private List<Hex> GetHexesOwnedBy(PlayerNumber player)
+        {
+            return Hexes.Where(x => x.Owner == player).ToList();
+        }
+
+        public List<Hex> UnownedHexes()
+        {
+            return GetHexesOwnedBy(PlayerNumber.Unowned);
+        }
+
+        public List<Hex> Player1Hexes()
+        {
+            return GetHexesOwnedBy(PlayerNumber.FirstPlayer);
+        }
+
+        public List<Hex> Player2Hexes()
+        {
+            return GetHexesOwnedBy(PlayerNumber.SecondPlayer);
         }
 
         private void AddNeighbourIfItExists(int x, int y, List<Hex> neighbours)
         {
             var hex = HexAt(x, y);
+            AddNeighbourIfItExists(hex, neighbours);
+        }
+
+        private void AddNeighbourIfItExists(Hex hex, List<Hex> neighbours)
+        {
             if (hex != null)
             {
                 neighbours.Add(hex);
             }
         }
+
+        public void ClaimHex(int x, int y, PlayerNumber newOwner)
+        {
+            var hex = HexAt(x, y);
+            hex.SetOwner(newOwner);
+        }
+
+        public void ReleaseHex(int x, int y)
+        {
+            var hex = HexAt(x, y);
+            hex.SetOwner(PlayerNumber.Unowned);
+        }
+
 
     }
 }
