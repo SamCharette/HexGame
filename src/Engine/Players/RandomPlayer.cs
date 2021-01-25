@@ -8,6 +8,7 @@ namespace Engine.Players
     public class RandomPlayer : BasePlayer
     {
         private Board Board;
+        public override string Type { get; protected set; } = "Random";
 
         public RandomPlayer(PlayerConstructorArguments args) : base(args)
         {
