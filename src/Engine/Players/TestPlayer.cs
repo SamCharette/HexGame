@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Engine.ValueTypes;
+using Engine;
 
 namespace Engine.Players
 {
@@ -14,14 +15,14 @@ namespace Engine.Players
         {
         }
 
-        public override Coordinates MakeMove(Coordinates opponentMove)
+        public override Move MakeMove(Coordinates opponentMove)
         {
             if (!Moves.Any())
             {
-                return new Coordinates(-1,-1);
+                return new Move(new Coordinates(-1,-1), Number);
             }
 
-            var move = new Coordinates(Moves.FirstOrDefault());
+            var move = new Move(new Coordinates(Moves.FirstOrDefault()), Number);
             Moves.RemoveAt(0);
             return move;
         }

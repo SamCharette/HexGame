@@ -14,7 +14,7 @@ namespace Engine.Players
             Number = parameters.PlayerNumber;
         }
 
-        public abstract Coordinates MakeMove(Coordinates opponentMove);
+        public abstract Move MakeMove(Coordinates opponentMove);
     }
 
     public class PlayerConstructorArguments
