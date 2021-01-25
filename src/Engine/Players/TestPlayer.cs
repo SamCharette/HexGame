@@ -10,6 +10,7 @@ namespace Engine.Players
     public class TestPlayer : BasePlayer
     {
         public List<Coordinates> Moves { get; set; } = new List<Coordinates>();
+        public override string Type { get; protected set; } = "Test";
 
         public TestPlayer(PlayerConstructorArguments parameters) : base(parameters)
         {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Engine.Players;
 using Engine.ValueTypes;
+using Newtonsoft.Json;
 
 namespace Engine
 {
@@ -10,7 +11,9 @@ namespace Engine
         public Guid Id { get; private set; } // Simply here for when recording games
         public DateTime StartedOn { get; private set; }
         public DateTime? EndedOn { get; private set; }
+        [JsonIgnore]
         public Board Board { get; private set; }
+        public int Size => Board.Size;
         public BasePlayer Player1 { get; private set; }
         public BasePlayer Player2 { get; private set; }
         public PlayerNumber Winner { get; private set; }
@@ -56,6 +59,11 @@ namespace Engine
            
 
             EndGame();
+        }
+
+        public string ToJson()
+        {
+            return JsonConvert.SerializeObject(this);
         }
 
         public bool IsGameOver()
