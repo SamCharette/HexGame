@@ -46,14 +46,21 @@ namespace Engine
                     lastMove = currentPlayer.MakeMove(lastMove);
                     if (IsValidMove(lastMove))
                     {
-                        Board.Hexes.FirstOrDefault(x => x.Coordinates.Equals(lastMove))?.SetOwner(Player1.Number);
+                        Board.HexAt(lastMove)?.SetOwner(Player1.Number);
+
                         Moves.Add(new Move(lastMove, currentPlayer.Number));
+                        if (Board.DoesWinningPathExistForPlayer(currentPlayer.Number))
+                        {
+                            Winner = currentPlayer.Number;
+                        }
                     }
                     else
                     {
                         Winner = SwitchCurrentPlayer(currentPlayer).Number;
                     }
+
                     currentPlayer = SwitchCurrentPlayer(currentPlayer);
+
 
                 } while (!lastMove.Equals(_concessionMove) && Winner == PlayerNumber.Unowned);
 

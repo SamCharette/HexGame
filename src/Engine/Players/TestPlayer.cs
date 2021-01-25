@@ -16,7 +16,10 @@ namespace Engine.Players
 
         public override Coordinates MakeMove(Coordinates opponentMove)
         {
-            if (!Moves.Any()) return new Coordinates(-1,-1);
+            if (!Moves.Any())
+            {
+                return new Coordinates(-1,-1);
+            }
 
             var move = new Coordinates(Moves.FirstOrDefault());
             Moves.RemoveAt(0);

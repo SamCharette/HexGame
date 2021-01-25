@@ -389,5 +389,103 @@ namespace Engine.Tests
             Assert.False(isStartHex);
         }
 
+        [Test]
+        public void DoesWinningPathExistForPlayer_ShouldReturnFalse_IfLookingAtUnownedPlayer()
+        {   
+            // Assemble
+            var board = new Board(11);
+
+            // Act
+            var pathExists = board.DoesWinningPathExistForPlayer(PlayerNumber.Unowned);
+
+            // Assert
+            Assert.IsFalse(pathExists);
+        }
+
+        [Test]
+        public void DoesWinningPathExistForPlayer_ShouldReturnFalse_IfPlayerHasNoPath()
+        {
+            // Assemble
+            var board = new Board(11);
+
+            // Act
+            var pathExists = board.DoesWinningPathExistForPlayer(PlayerNumber.SecondPlayer);
+
+            // Assert
+            Assert.IsFalse(pathExists);
+        }
+
+        [Test]
+        public void DoesWinningPathExistForPlayer_ShouldReturnFalse_IfPlayerOnlyStartAndEndHexes()
+        {
+            // Assemble
+            var board = new Board(11);
+            board.HexAt(0,0).SetOwner(PlayerNumber.FirstPlayer);
+            board.HexAt(0,10).SetOwner(PlayerNumber.FirstPlayer);
+
+            // Act
+            var pathExists = board.DoesWinningPathExistForPlayer(PlayerNumber.FirstPlayer);
+
+            // Assert
+            Assert.IsFalse(pathExists);
+        }
+
+        [Test]
+        public void DoesWinningPathExistForPlayer_ShouldReturnTrue_IfPlayerHasPath()
+        {
+            // Assemble
+            var board = new Board(11);
+            board.HexAt(0, 0).SetOwner(PlayerNumber.FirstPlayer);
+            board.HexAt(0, 1).SetOwner(PlayerNumber.FirstPlayer);
+            board.HexAt(0, 2).SetOwner(PlayerNumber.FirstPlayer);
+            board.HexAt(0, 3).SetOwner(PlayerNumber.FirstPlayer);
+            board.HexAt(0, 4).SetOwner(PlayerNumber.FirstPlayer);
+            board.HexAt(0, 5).SetOwner(PlayerNumber.FirstPlayer);
+            board.HexAt(0, 6).SetOwner(PlayerNumber.FirstPlayer);
+            board.HexAt(0, 7).SetOwner(PlayerNumber.FirstPlayer);
+            board.HexAt(0, 8).SetOwner(PlayerNumber.FirstPlayer);
+            board.HexAt(0, 9).SetOwner(PlayerNumber.FirstPlayer);
+            board.HexAt(0, 10).SetOwner(PlayerNumber.FirstPlayer);
+
+            // Act
+            var pathExists = board.DoesWinningPathExistForPlayer(PlayerNumber.FirstPlayer);
+
+            // Assert
+            Assert.IsTrue(pathExists);
+        }
+
+        [Test]
+        public void DoesWinningPathExistForPlayer_ShouldReturnTrue_EvenIfPathIsWindy()
+        {
+            // Assemble
+            var board = new Board(11);
+            board.HexAt(0, 0).SetOwner(PlayerNumber.SecondPlayer);
+            board.HexAt(0, 1).SetOwner(PlayerNumber.SecondPlayer);
+            board.HexAt(1, 1).SetOwner(PlayerNumber.SecondPlayer);
+            board.HexAt(2, 1).SetOwner(PlayerNumber.SecondPlayer);
+            board.HexAt(2, 2).SetOwner(PlayerNumber.SecondPlayer);
+            board.HexAt(2, 3).SetOwner(PlayerNumber.SecondPlayer);
+            board.HexAt(3, 3).SetOwner(PlayerNumber.SecondPlayer);
+            board.HexAt(4, 3).SetOwner(PlayerNumber.SecondPlayer);
+            board.HexAt(5, 3).SetOwner(PlayerNumber.SecondPlayer);
+            board.HexAt(5, 4).SetOwner(PlayerNumber.SecondPlayer);
+            board.HexAt(5, 5).SetOwner(PlayerNumber.SecondPlayer);
+            board.HexAt(5, 6).SetOwner(PlayerNumber.SecondPlayer);
+            board.HexAt(5, 7).SetOwner(PlayerNumber.SecondPlayer);
+            board.HexAt(5, 8).SetOwner(PlayerNumber.SecondPlayer);
+            board.HexAt(5, 9).SetOwner(PlayerNumber.SecondPlayer);
+            board.HexAt(5, 10).SetOwner(PlayerNumber.SecondPlayer);
+            board.HexAt(6, 10).SetOwner(PlayerNumber.SecondPlayer);
+            board.HexAt(7, 10).SetOwner(PlayerNumber.SecondPlayer);
+            board.HexAt(8, 10).SetOwner(PlayerNumber.SecondPlayer);
+            board.HexAt(9, 10).SetOwner(PlayerNumber.SecondPlayer);
+            board.HexAt(10, 9).SetOwner(PlayerNumber.SecondPlayer);
+
+            // Act
+            var pathExists = board.DoesWinningPathExistForPlayer(PlayerNumber.SecondPlayer);
+
+            // Assert
+            Assert.IsTrue(pathExists);
+        }
     }
 }
