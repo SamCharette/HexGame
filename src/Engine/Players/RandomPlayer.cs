@@ -10,7 +10,6 @@ namespace Engine.Players
 
         public RandomPlayer(PlayerConstructorArguments args) : base(args)
         {
-            Number = args.PlayerNumber;
             Board = new Board(args.BoardSize);
         }
 

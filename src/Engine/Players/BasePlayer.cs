@@ -11,7 +11,7 @@ namespace Engine.Players
         public PlayerNumber Number { get; protected set; }
         protected BasePlayer(PlayerConstructorArguments parameters)
         {
-
+            Number = parameters.PlayerNumber;
         }
 
         public abstract Coordinates MakeMove(Coordinates opponentMove);
