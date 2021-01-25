@@ -396,7 +396,7 @@ namespace Engine.Tests
             var board = new Board(11);
 
             // Act
-            var pathExists = board.DoesWinningPathExistForPlayer(PlayerNumber.Unowned);
+            var pathExists = board.WinningPathExistsForPlayer(PlayerNumber.Unowned);
 
             // Assert
             Assert.IsFalse(pathExists);
@@ -409,7 +409,7 @@ namespace Engine.Tests
             var board = new Board(11);
 
             // Act
-            var pathExists = board.DoesWinningPathExistForPlayer(PlayerNumber.SecondPlayer);
+            var pathExists = board.WinningPathExistsForPlayer(PlayerNumber.SecondPlayer);
 
             // Assert
             Assert.IsFalse(pathExists);
@@ -424,7 +424,7 @@ namespace Engine.Tests
             board.HexAt(0,10).SetOwner(PlayerNumber.FirstPlayer);
 
             // Act
-            var pathExists = board.DoesWinningPathExistForPlayer(PlayerNumber.FirstPlayer);
+            var pathExists = board.WinningPathExistsForPlayer(PlayerNumber.FirstPlayer);
 
             // Assert
             Assert.IsFalse(pathExists);
@@ -448,7 +448,7 @@ namespace Engine.Tests
             board.HexAt(0, 10).SetOwner(PlayerNumber.FirstPlayer);
 
             // Act
-            var pathExists = board.DoesWinningPathExistForPlayer(PlayerNumber.FirstPlayer);
+            var pathExists = board.WinningPathExistsForPlayer(PlayerNumber.FirstPlayer);
 
             // Assert
             Assert.IsTrue(pathExists);
@@ -482,7 +482,7 @@ namespace Engine.Tests
             board.HexAt(10, 9).SetOwner(PlayerNumber.SecondPlayer);
 
             // Act
-            var pathExists = board.DoesWinningPathExistForPlayer(PlayerNumber.SecondPlayer);
+            var pathExists = board.WinningPathExistsForPlayer(PlayerNumber.SecondPlayer);
 
             // Assert
             Assert.IsTrue(pathExists);

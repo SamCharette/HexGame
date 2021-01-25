@@ -168,7 +168,7 @@ namespace Engine
             return hex.X == Size - 1;
         }
 
-        public bool DoesWinningPathExistForPlayer(PlayerNumber player)
+        public bool WinningPathExistsForPlayer(PlayerNumber player)
         {
             if (player == PlayerNumber.Unowned) return false;
 

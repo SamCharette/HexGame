@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using Engine.Players;
 using Engine.ValueTypes;
 
@@ -22,6 +23,9 @@ namespace Engine
 
         private readonly Coordinates _concessionMove = new Coordinates(-1, -1);
 
+        private BasePlayer _currentPlayer;
+        private Coordinates _lastMove;
+
         public Game(int size, BasePlayer player1, BasePlayer player2)
         {
             Id = Guid.NewGuid();
@@ -30,51 +34,56 @@ namespace Engine
             Player1 = player1;
             Player2 = player2;
             Winner = PlayerNumber.Unowned;
+            _currentPlayer = player1;
+            _lastMove = _concessionMove;
 
             Moves = new List<Move>();
         }
 
         public void StartGame()
         {
-            try
-            {
-                var currentPlayer = Player1;
 
-                var lastMove = _concessionMove;
-                do
+            do
+            {
+                _lastMove = _currentPlayer.MakeMove(_lastMove);
+                if (IsValidMove(_lastMove))
                 {
-                    lastMove = currentPlayer.MakeMove(lastMove);
-                    if (IsValidMove(lastMove))
-                    {
-                        Board.HexAt(lastMove)?.SetOwner(Player1.Number);
+                    HandleValidMove(_lastMove, _currentPlayer);
+                }
+                else
+                {
+                    Winner = SwitchCurrentPlayer().Number;
+                }
 
-                        Moves.Add(new Move(lastMove, currentPlayer.Number));
-                        if (Board.DoesWinningPathExistForPlayer(currentPlayer.Number))
-                        {
-                            Winner = currentPlayer.Number;
-                        }
-                    }
-                    else
-                    {
-                        Winner = SwitchCurrentPlayer(currentPlayer).Number;
-                    }
-
-                    currentPlayer = SwitchCurrentPlayer(currentPlayer);
+                SwitchCurrentPlayer();
 
 
-                } while (!lastMove.Equals(_concessionMove) && Winner == PlayerNumber.Unowned);
+            } while (!IsGameOver());
 
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
+           
 
             EndGame();
         }
 
+        public bool IsGameOver()
+        {
+            return Winner != PlayerNumber.Unowned;
+        }
+
+        private void HandleValidMove(Coordinates coordinates, BasePlayer player)
+        {
+            Board.HexAt(coordinates)?.SetOwner(player.Number);
+
+            Moves.Add(new Move(coordinates, player.Number));
+            if (Board.WinningPathExistsForPlayer(player.Number))
+            {
+                Winner = player.Number;
+            }
+        }
+
         private bool IsValidMove(Coordinates coords)
         {
+            if (coords.Equals(_concessionMove)) return false;
             var hexOnBoard = Board.HexAt(coords);
 
             return hexOnBoard != null && hexOnBoard.Owner == PlayerNumber.Unowned;
@@ -91,9 +100,10 @@ namespace Engine
             EndedOn = DateTime.Now;
         }
 
-        private BasePlayer SwitchCurrentPlayer(BasePlayer lastPlayer)
+        private BasePlayer SwitchCurrentPlayer()
         {
-            return lastPlayer.Number == PlayerNumber.FirstPlayer ? Player2 : Player1;
+            _currentPlayer = _currentPlayer.Number == PlayerNumber.FirstPlayer ? Player2 : Player1;
+            return _currentPlayer;
         }
     }
 }
