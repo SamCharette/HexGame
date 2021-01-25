@@ -2,17 +2,38 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Engine.Players;
+using Engine.Tools;
 using Engine.ValueTypes;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Schema;
+using Newtonsoft.Json.Schema.Generation;
 using NUnit.Framework;
+
 
 namespace Engine.Tests
 {
     public class GameTests
     {
-        [SetUp]
-        public void Setup()
+        [Test]
+        public void ToJson_ShouldProduceValidJson()
         {
+            // Assemble
+            var size = 11;
+            var player1 = new RandomPlayer(new PlayerConstructorArguments(size, PlayerNumber.FirstPlayer, "{\"Name\":\"Random\"}"));
+            var player2 = new RandomPlayer(new PlayerConstructorArguments(size, PlayerNumber.SecondPlayer, "{\"Name\":\"Randomer\"}"));
+            var game = new Game(size, player1, player2);
+
+            // Act
+            game.StartGame();
+            var json = game.ToJson();
+
+            // Assert
+            var validator = new JsonValidator<Game>();
+            Assert.IsTrue(validator.IsValid(json));
+
         }
+
 
         [Test]
         public void GameConstructor_ShouldProperlyAssignPlayers()
