@@ -16,10 +16,8 @@ namespace Engine
         public PlayerNumber Winner { get; private set; }
         public List<Move> Moves { get; private set; }
 
-        private readonly Coordinates _concessionMove = new Coordinates(-1, -1);
-
         private BasePlayer _currentPlayer;
-        private Coordinates _lastMove;
+        private Move _lastMove;
 
         public Game(int size, BasePlayer player1, BasePlayer player2)
         {
@@ -30,7 +28,7 @@ namespace Engine
             Player2 = player2;
             Winner = PlayerNumber.Unowned;
             _currentPlayer = player1;
-            _lastMove = _concessionMove;
+            _lastMove = new Move(new Coordinates(-1, -1), PlayerNumber.Unowned);
 
             Moves = new List<Move>();
         }
@@ -40,10 +38,10 @@ namespace Engine
 
             do
             {
-                _lastMove = _currentPlayer.MakeMove(_lastMove);
+                _lastMove = _currentPlayer.MakeMove(_lastMove.Coordinates);
                 if (IsValidMove(_lastMove))
                 {
-                    HandleValidMove(_lastMove, _currentPlayer);
+                    HandleValidMove(_lastMove);
                 }
                 else
                 {
@@ -65,21 +63,20 @@ namespace Engine
             return Winner != PlayerNumber.Unowned;
         }
 
-        private void HandleValidMove(Coordinates coordinates, BasePlayer player)
+        private void HandleValidMove(Move move)
         {
-            Board.HexAt(coordinates)?.SetOwner(player.Number);
+            Board.HexAt(move.Coordinates)?.SetOwner(move.PlayerNumber);
 
-            Moves.Add(new Move(coordinates, player.Number));
-            if (Board.WinningPathExistsForPlayer(player.Number))
+            Moves.Add(new Move(move.Coordinates, move.PlayerNumber));
+            if (Board.WinningPathExistsForPlayer(move.PlayerNumber))
             {
-                Winner = player.Number;
+                Winner = move.PlayerNumber;
             }
         }
 
-        private bool IsValidMove(Coordinates coords)
+        private bool IsValidMove(Move move)
         {
-            if (coords.Equals(_concessionMove)) return false;
-            var hexOnBoard = Board.HexAt(coords);
+            var hexOnBoard = Board.HexAt(move.Coordinates);
 
             return hexOnBoard != null && hexOnBoard.Owner == PlayerNumber.Unowned;
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Engine.ValueTypes;
+using Engine;
 
 namespace Engine.Players
 {
@@ -13,7 +14,7 @@ namespace Engine.Players
             Board = new Board(args.BoardSize);
         }
 
-        public override Coordinates MakeMove(Coordinates opponentMove)
+        public override Move MakeMove(Coordinates opponentMove)
         {
             try
             {
@@ -29,7 +30,7 @@ namespace Engine.Players
                 if (moveToMake != null)
                 {
                     moveToMake.SetOwner(Number);
-                    return moveToMake.Coordinates;
+                    return new Move(moveToMake.Coordinates, Number);
                 }
 
             }
@@ -41,9 +42,9 @@ namespace Engine.Players
             return ConcedeGame();
         }
 
-        private Coordinates ConcedeGame()
+        private Move ConcedeGame()
         {
-            return new Coordinates(-1, -1);
+            return new Move(new Coordinates(-1, -1), Number);
         }
 
         private void SetOpponentPosition(Coordinates opponentMove)

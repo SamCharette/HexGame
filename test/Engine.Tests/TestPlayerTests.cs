@@ -30,7 +30,7 @@ namespace Engine.Tests
             var move = player1.MakeMove(new Coordinates(-1, -1));
 
             // Assert
-            Assert.AreEqual(move, new Coordinates(0,0));
+            Assert.IsTrue(move.Equals(new Move (new Coordinates(0,0), player1.Number)));
             Assert.AreEqual(4, player1.Moves.Count);
             var movesLeft = player1.Moves.ToList();
             Assert.IsFalse(player1.Moves.Any(x => x.Equals(new Coordinates(0,0))));
@@ -48,7 +48,7 @@ namespace Engine.Tests
             var move = player1.MakeMove(new Coordinates(0, 0));
 
             // Assert
-            Assert.AreEqual(new Coordinates(-1,-1), move);
+            Assert.IsTrue(new Move(new Coordinates(-1,-1), player1.Number).Equals( move));
         }
     }
 }
