@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Engine.ValueTypes;
+using FluentAssertions;
 using NUnit.Framework;
 
 namespace Engine.Tests
@@ -19,7 +20,8 @@ namespace Engine.Tests
             var neighbours = board.GetNeighboursOf(5, 5);
 
             // Assert
-            Assert.AreEqual(6, neighbours.Count);
+            neighbours.Should().HaveCount(6, "because the middle hexes are surrounded on 6 sides");
+
         }
 
         [Test]
