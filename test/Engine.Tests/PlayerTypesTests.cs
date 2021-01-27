@@ -2,6 +2,7 @@
 using System.Reflection;
 using Engine.Players;
 using Engine.ValueTypes;
+using FluentAssertions;
 using NUnit.Framework;
 
 namespace Engine.Tests
@@ -19,7 +20,7 @@ namespace Engine.Tests
             var factory = new PlayerFactory();
 
             // Assert
-            Assert.AreEqual(2, factory.PlayerTypes.Count());
+            factory.PlayerTypes.Should().HaveCount(2, "because there are two types currently");
         }
 
         [Test]
@@ -33,7 +34,7 @@ namespace Engine.Tests
             var player = factory.CreatePlayerOfType("TestPlayer", args);
 
             // Assert
-            Assert.AreEqual(player.GetType(), typeof(TestPlayer));
+            player.Should().BeOfType(typeof(TestPlayer), "because that is what we chose");
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Engine.ValueTypes;
+using FluentAssertions;
 using NUnit.Framework;
 
 namespace Engine.Tests
@@ -19,7 +20,8 @@ namespace Engine.Tests
             var neighbours = board.GetNeighboursOf(5, 5);
 
             // Assert
-            Assert.AreEqual(6, neighbours.Count);
+            neighbours.Should().HaveCount(6, "because the middle hexes are surrounded on 6 sides");
+
         }
 
         [Test]
@@ -32,7 +34,7 @@ namespace Engine.Tests
             var neighbours = board.GetNeighboursOf(0, 0);
 
             // Assert
-            Assert.AreEqual(2, neighbours.Count);
+            neighbours.Should().HaveCount(2, "because the origin hex at 0,0 only has two neighbours");
         }
 
         [Test]
@@ -45,7 +47,7 @@ namespace Engine.Tests
             var neighbours = board.GetNeighboursOf(-1, -1);
 
             // Assert
-            Assert.IsEmpty(neighbours);
+            neighbours.Should().BeEmpty("because that location is not on the board.");
         }
 
         [Test]
@@ -58,7 +60,7 @@ namespace Engine.Tests
             var hex = board.HexAt(-1, -1);
 
             // Assert
-            Assert.IsNull(hex);
+            hex.Should().BeNull("because that hex does not exist on the board");
         }
 
         [Test]
@@ -74,7 +76,9 @@ namespace Engine.Tests
             var friendlyNeighbours = board.GetFriendlyNeighboursOf(3, 3);
 
             // Assert
-            Assert.AreEqual(2, friendlyNeighbours.Count);
+            friendlyNeighbours
+                .Should()
+                .HaveCount(2, "because that is how many friendly neighbours we set up");
         }
 
         [Test]
@@ -87,7 +91,7 @@ namespace Engine.Tests
             var friendlyNeighbours = board.GetFriendlyNeighboursOf(-1, -1);
 
             // Assert
-            Assert.IsEmpty(friendlyNeighbours);
+            friendlyNeighbours.Should().BeEmpty("because that hex doesn't exist");
         }
 
         [Test]
@@ -95,14 +99,28 @@ namespace Engine.Tests
         {
             // Assemble
             var board = new Board(11);
+            board.Hexes.Where(x => !x.IsOwned).Should().HaveCount(121, "because it's a new 11x11 board");
 
             // Act
             board.ClaimHex(3,3, PlayerNumber.FirstPlayer);
 
             // Assert
-            Assert.AreEqual(board.Hexes.Count, board.Hexes.Count(x => x.Owner == PlayerNumber.Unowned) + 1);
-            Assert.AreEqual(1, board.Hexes.Count(x => x.Owner == PlayerNumber.FirstPlayer));
-            Assert.AreEqual(PlayerNumber.FirstPlayer, board.HexAt(3,3).Owner);
+            board
+                .Hexes
+                .Where(x => !x.IsOwned)
+                .Should()
+                .HaveCount(120, "because now one is owned");
+            board
+                .Hexes
+                .Where(x => x.IsOwned)
+                .Should()
+                .HaveCount(1, "because one is now owned");
+            board
+                .HexAt(3,3)
+                .Owner
+                .Should()
+                .BeEquivalentTo(PlayerNumber.FirstPlayer, "because that's who now owns the hex"); 
+
         }
 
         [Test]
@@ -111,13 +129,13 @@ namespace Engine.Tests
             // Assemble
             var board = new Board(11);
             board.HexAt(3,3).SetOwner(PlayerNumber.FirstPlayer);
-            Assume.That(board.Hexes.Count(x => x.Owner != PlayerNumber.FirstPlayer), Is.EqualTo(120));
+            board.Hexes.Where(x => !x.IsOwned).Should().HaveCount(120, "because only one is owned");
 
             // Act
             board.ReleaseHex(3, 3);
 
             // Assert
-            Assert.AreEqual(121, board.Hexes.Count(x => !x.IsOwned));
+            board.Hexes.Where(x => !x.IsOwned).Should().HaveCount(121, "because now all are free");
         }
 
         [Test]
@@ -126,13 +144,13 @@ namespace Engine.Tests
             // Assemble
             var board = new Board(11);
             board.HexAt(3,3).SetOwner(PlayerNumber.FirstPlayer);
-            Assume.That(board.UnownedHexes().Count, Is.EqualTo(120));
+            board.UnownedHexes().Should().HaveCount(120, "because we have one owned");
 
             // Act
             board.HexAt(3, 4).SetOwner(PlayerNumber.FirstPlayer);
 
             // Assert
-            Assert.AreEqual(119, board.UnownedHexes().Count);
+            board.UnownedHexes().Should().HaveCount(119, "because now two are owned");
 
         }
 
@@ -142,13 +160,13 @@ namespace Engine.Tests
             // Assemble
             var board = new Board(11);
             board.HexAt(3, 3).SetOwner(PlayerNumber.FirstPlayer);
-            Assume.That(board.Player1Hexes().Count, Is.EqualTo(1));
+            board.Player1Hexes().Should().HaveCount(1, "because player 1 has only one hex");
 
             // Act
             board.HexAt(3, 4).SetOwner(PlayerNumber.FirstPlayer);
 
             // Assert
-            Assert.AreEqual(2, board.Player1Hexes().Count);
+            board.Player1Hexes().Should().HaveCount(2, "because now two are owned by player 1");
 
         }
 
@@ -158,12 +176,13 @@ namespace Engine.Tests
             // Assemble
             var board = new Board(11);
             board.HexAt(3, 3).SetOwner(PlayerNumber.SecondPlayer);
-            Assume.That(board.Player2Hexes().Count, Is.EqualTo(1));
+            board.Player2Hexes().Should().HaveCount(1, "because player 2 has only one hex");
 
             // Act
             board.HexAt(3, 4).SetOwner(PlayerNumber.SecondPlayer);
 
             // Assert
+            board.Player2Hexes().Should().HaveCount(2, "because now player 2 owns 2 hexes");
             Assert.AreEqual(2, board.Player2Hexes().Count);
 
         }
@@ -182,7 +201,7 @@ namespace Engine.Tests
             var areConnected = board.AreConnected(hex1,hex2);
 
             // Assert
-            Assert.IsTrue(areConnected);
+            areConnected.Should().BeTrue("because the hexes are connected");
         }
 
         [Test]
@@ -201,7 +220,7 @@ namespace Engine.Tests
             var areConnected = board.AreConnected(hex1, hex3);
 
             // Assert
-            Assert.IsTrue(areConnected);
+            areConnected.Should().BeTrue("because the hexes are connected");
         }
 
         [Test]
@@ -224,7 +243,7 @@ namespace Engine.Tests
             var areConnected = board.AreConnected(hex1, hex5);
 
             // Assert
-            Assert.IsTrue(areConnected);
+            areConnected.Should().BeTrue("because the hexes are connected");
         }
 
         [Test]
@@ -247,7 +266,7 @@ namespace Engine.Tests
             var areConnected = board.AreConnected(hex1, hex5);
 
             // Assert
-            Assert.False(areConnected);
+            areConnected.Should().BeFalse("because they are not connected");
         }
 
         [Test]
@@ -262,6 +281,7 @@ namespace Engine.Tests
             var areConnected = board.AreConnected(hex, hex);
 
             // Assert
+            areConnected.Should().BeTrue("because a hex is considered connected to itself");
             Assert.IsTrue(areConnected);
         }
 
@@ -280,10 +300,10 @@ namespace Engine.Tests
             var test4 = board.AreConnected(null, hex1);
 
             // Assert
-            Assert.IsFalse(test1);
-            Assert.IsFalse(test2);
-            Assert.IsFalse(test3);
-            Assert.IsFalse(test4);
+            test1.Should().BeFalse("because the finish hex is not on the board");
+            test2.Should().BeFalse("because the start hex is not on the board");
+            test3.Should().BeFalse("because the finish hex is null");
+            test4.Should().BeFalse("because the start hex is null");
 
         }
 
@@ -302,7 +322,7 @@ namespace Engine.Tests
             var areConnected = board.AreConnected(hex1, hex2);
 
             // Assert
-            Assert.IsFalse(areConnected);
+            areConnected.Should().BeFalse("because the hexes simply have different owners");
         }
 
         [Test]
@@ -316,7 +336,7 @@ namespace Engine.Tests
             var isStartHex = board.IsStartHexForPlayer(hex, PlayerNumber.FirstPlayer);
 
             // Assert
-            Assert.IsTrue(isStartHex);
+            isStartHex.Should().BeTrue("because the y coordinate is on the starting line for player 1");
         }
 
         [Test]
@@ -330,6 +350,7 @@ namespace Engine.Tests
             var isStartHex = board.IsStartHexForPlayer(hex, PlayerNumber.SecondPlayer);
 
             // Assert
+            isStartHex.Should().BeTrue("because the x coordinate is on the starting line for player 2");
             Assert.IsTrue(isStartHex);
         }
 
@@ -344,6 +365,7 @@ namespace Engine.Tests
             var isStartHex = board.IsStartHexForPlayer(hex, PlayerNumber.SecondPlayer);
 
             // Assert
+            isStartHex.Should().BeFalse("because that hex doesn't exist on the board");
             Assert.False(isStartHex);
         }
 
@@ -355,10 +377,10 @@ namespace Engine.Tests
             var hex = board.HexAt(5, 10);
 
             // Act
-            var isStartHex = board.IsEndHexForPlayer(hex, PlayerNumber.FirstPlayer);
+            var isEndingHex = board.IsEndHexForPlayer(hex, PlayerNumber.FirstPlayer);
 
             // Assert
-            Assert.IsTrue(isStartHex);
+            isEndingHex.Should().BeTrue("because the Y coordinate is on the finish line on this board for player 1");
         }
 
         [Test]
@@ -369,10 +391,10 @@ namespace Engine.Tests
             var hex = board.HexAt(10, 5);
 
             // Act
-            var isStartHex = board.IsEndHexForPlayer(hex, PlayerNumber.SecondPlayer);
+            var isEndingHex = board.IsEndHexForPlayer(hex, PlayerNumber.SecondPlayer);
 
             // Assert
-            Assert.IsTrue(isStartHex);
+            isEndingHex.Should().BeTrue("because the x coordinate is on the finish line on this board for player 2");
         }
 
         [Test]
@@ -383,10 +405,10 @@ namespace Engine.Tests
             var hex = new Hex(-1, 55);
 
             // Act
-            var isStartHex = board.IsEndHexForPlayer(hex, PlayerNumber.SecondPlayer);
+            var isEndingHex = board.IsEndHexForPlayer(hex, PlayerNumber.SecondPlayer);
 
             // Assert
-            Assert.False(isStartHex);
+            isEndingHex.Should().BeFalse("because the hex is not on the board");
         }
 
         [Test]
@@ -399,7 +421,7 @@ namespace Engine.Tests
             var pathExists = board.WinningPathExistsForPlayer(PlayerNumber.Unowned);
 
             // Assert
-            Assert.IsFalse(pathExists);
+            pathExists.Should().BeFalse("because player is unowned, and can't have a path");
         }
 
         [Test]
@@ -412,7 +434,7 @@ namespace Engine.Tests
             var pathExists = board.WinningPathExistsForPlayer(PlayerNumber.SecondPlayer);
 
             // Assert
-            Assert.IsFalse(pathExists);
+            pathExists.Should().BeFalse("because there is not a path for this player between these hexes");
         }
 
         [Test]
@@ -427,7 +449,7 @@ namespace Engine.Tests
             var pathExists = board.WinningPathExistsForPlayer(PlayerNumber.FirstPlayer);
 
             // Assert
-            Assert.IsFalse(pathExists);
+            pathExists.Should().BeFalse("because only the start and end hexes are owned, no path inbetween");
         }
 
         [Test]
@@ -451,7 +473,7 @@ namespace Engine.Tests
             var pathExists = board.WinningPathExistsForPlayer(PlayerNumber.FirstPlayer);
 
             // Assert
-            Assert.IsTrue(pathExists);
+            pathExists.Should().BeTrue("because a path for this player exists");
         }
 
         [Test]
@@ -485,7 +507,7 @@ namespace Engine.Tests
             var pathExists = board.WinningPathExistsForPlayer(PlayerNumber.SecondPlayer);
 
             // Assert
-            Assert.IsTrue(pathExists);
+            pathExists.Should().BeTrue("because even if it is a windy path, a path exists in this scenario");
         }
     }
 }

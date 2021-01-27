@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using Engine.Players;
 using Engine.Tools;
 using Engine.ValueTypes;
+using FluentAssertions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Schema;
@@ -30,7 +32,7 @@ namespace Engine.Tests
 
             // Assert
             var validator = new JsonValidator<Game>();
-            Assert.IsTrue(validator.IsValid(json));
+            validator.IsValid(json).Should().BeTrue("because the serialization should work");
 
         }
 
@@ -47,8 +49,8 @@ namespace Engine.Tests
             var game = new Game(size, player1, player2);
 
             // Assert
-            Assert.AreEqual(player1, game.Player1);
-            Assert.AreNotEqual(player2, game.Player1);
+            game.Player1.Should().BeEquivalentTo(player1, "because they are the same");
+            game.Player2.Should().NotBeEquivalentTo(player1, "because player 2 is not player 1");
         }
 
 
@@ -64,7 +66,7 @@ namespace Engine.Tests
             var game = new Game(size, player1, player2);
 
             // Assert
-            Assert.IsFalse(game.IsGameOver());
+            game.IsGameOver().Should().BeFalse("because the game hasn't started");
 
         }
 
@@ -81,7 +83,7 @@ namespace Engine.Tests
             game.StartGame();
 
             // Assert
-            Assert.IsTrue(game.IsGameOver());
+            game.IsGameOver().Should().BeTrue("because with no moves, a test player forfeits the game");
 
         }
 
@@ -110,10 +112,8 @@ namespace Engine.Tests
             Assume.That(player2.Moves.Count, Is.EqualTo(5));
 
             var game = new Game(size, player1, player2);
-            Assume.That(game.Moves.Count, Is.EqualTo(0));
-            Assume.That(
-                game.Board.Hexes.Count(x => x.Owner == PlayerNumber.Unowned),
-                Is.EqualTo(size * size));
+            game.Moves.Should().HaveCount(0, "because the game hasn't started yet");
+            game.Board.UnownedHexes().Should().HaveCount(size * size, "because the game hasn't begun");
 
             // Act
             game.StartGame();
@@ -123,14 +123,13 @@ namespace Engine.Tests
                 .Count(x => x.Owner == PlayerNumber.Unowned);
 
             // Assert
-            Assert.IsTrue(game.EndedOn > game.StartedOn);
-            Assert.AreEqual(PlayerNumber.FirstPlayer, game.Winner);
-            Assert.AreEqual((size * size) - 9, unownedSpaces);
-            Assert.AreEqual(4,
-                game
-                    .Moves
-                    .Count(x => x.PlayerNumber == PlayerNumber.SecondPlayer));
-            Assert.AreEqual(9, game.Moves.Count);
+            (game.EndedOn > game.StartedOn).Should().BeTrue("because the game is over");
+            game.Winner.Should().BeEquivalentTo(PlayerNumber.FirstPlayer, "because player 1 won the game");
+            game.Board.UnownedHexes().Should()
+                .HaveCount((size * size) - 9, "because 9 moves were made during the game");
+            game.Moves.Where(x => x.PlayerNumber == PlayerNumber.SecondPlayer).Should()
+                .HaveCount(4, "because the second player only made 4 moves");
+            game.Moves.Should().HaveCount(9, "because 9 moves were made in total");
         }
 
         [Test]
@@ -149,7 +148,8 @@ namespace Engine.Tests
             var size = 11;
             var player2 = new RandomPlayer(new PlayerConstructorArguments (11, PlayerNumber.SecondPlayer ));
 
-            Assert.Throws<ArgumentException>(() => new Game(1, null, player2));
+            Action act = () => new Game(1, null, player2);
+            act.Should().Throw<ArgumentException>("because player 1 is null");
         }
 
         [Test]
@@ -158,7 +158,8 @@ namespace Engine.Tests
             var size = 11;
             var player1 = new RandomPlayer(new PlayerConstructorArguments (11, PlayerNumber.FirstPlayer ));
 
-            Assert.Throws<ArgumentException>(() => new Game(1, player1, null));
+            Action act = () => new Game(1, null, player1);
+            act.Should().Throw<ArgumentException>("because player 2 is null");
         }
     }
 }
