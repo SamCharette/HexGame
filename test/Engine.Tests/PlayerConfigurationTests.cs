@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Engine.Players;
+using FluentAssertions;
 using Newtonsoft.Json;
 using NUnit.Framework;
 
@@ -21,7 +22,7 @@ namespace Engine.Tests
             var newConfig = Configuration.GetConfiguration(json);
 
             // assert
-            Assert.IsNull(newConfig);
+            newConfig.Should().BeNull("because the json was bad");
         }
 
         [Test]
@@ -34,10 +35,10 @@ namespace Engine.Tests
             var config = Configuration.GetConfiguration(json);
 
             // assert
-            Assert.AreEqual(typeof(Configuration), config.GetType());
-            Assert.AreEqual("Player", config.TypeName);
-            Assert.AreEqual("Test Player", config.PlayerName);
-            Assert.AreEqual(0, config.Options.Count);
+            config.Should().BeOfType(typeof(Configuration), "because the json was good");
+            config.TypeName.Should().BeEquivalentTo("Player", "because the type given was Player");
+            config.PlayerName.Should().BeEquivalentTo("Test Player", "because that is the name we gave it");
+            config.Options.Should().HaveCount(0, "because no options were given");
         }
 
         [Test]
@@ -50,11 +51,12 @@ namespace Engine.Tests
             var config = Configuration.GetConfiguration(json);
 
             // assert
-            Assert.AreEqual(typeof(Configuration), config.GetType());
-            Assert.AreEqual("Player", config.TypeName);
-            Assert.AreEqual("Test Player", config.PlayerName);
-            Assert.AreEqual(2, config.Options.Count);
-            Assert.AreEqual("is an option", config.Options.FirstOrDefault(x => x.Key == "First option").Value);
+            config.Should().BeOfType(typeof(Configuration), "because the json was good");
+            config.TypeName.Should().BeEquivalentTo("Player", "because the type given was Player");
+            config.PlayerName.Should().BeEquivalentTo("Test Player", "because that is the name we gave it");
+            config.Options.Should().HaveCount(2, "because 2 options were given");
+            config.Options.FirstOrDefault(x => x.Key == "First option").Value.Should()
+                .BeEquivalentTo("is an option", "because that is what we set it to");
         }
     }
 }
