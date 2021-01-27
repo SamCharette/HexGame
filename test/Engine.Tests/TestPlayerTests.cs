@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Engine.Players;
 using Engine.ValueTypes;
+using FluentAssertions;
 using NUnit.Framework;
 
 namespace Engine.Tests
@@ -30,10 +31,11 @@ namespace Engine.Tests
             var move = player1.MakeMove(new Coordinates(-1, -1));
 
             // Assert
-            Assert.IsTrue(move.Equals(new Move (new Coordinates(0,0), player1.Number)));
-            Assert.AreEqual(4, player1.Moves.Count);
+            move.Should().BeEquivalentTo(new Move(new Coordinates(0,0), player1.Number));
+            player1.Moves.Should().HaveCount(4, "because we had 5 moves and used one");
+
             var movesLeft = player1.Moves.ToList();
-            Assert.IsFalse(player1.Moves.Any(x => x.Equals(new Coordinates(0,0))));
+            player1.Moves.Any(x => x.Equals(new Coordinates(0, 0))).Should().BeFalse();
 
         }
 
@@ -46,9 +48,9 @@ namespace Engine.Tests
 
             // Act
             var move = player1.MakeMove(new Coordinates(0, 0));
-
+            var badMove = new Move(new Coordinates(-1, -1), player1.Number);
             // Assert
-            Assert.IsTrue(new Move(new Coordinates(-1,-1), player1.Number).Equals( move));
+            move.Should().BeEquivalentTo(badMove, "because the player has no moves to choose from");
         }
     }
 }
