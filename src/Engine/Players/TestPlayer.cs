@@ -9,11 +9,27 @@ namespace Engine.Players
 {
     public class TestPlayer : BasePlayer
     {
-        public List<Coordinates> Moves { get; set; } = new List<Coordinates>();
+        public Queue<Coordinates> Moves { get; set; } = new Queue<Coordinates>();
         public override string Type { get; protected set; } = "Test";
 
         public TestPlayer(PlayerConstructorArguments parameters) : base(parameters)
         {
+        }
+
+        public TestPlayer AddMove(Coordinates coordinstes)
+        {
+            Moves.Enqueue(coordinstes);
+            return this;
+        }
+
+        public TestPlayer AddMove(int x, int y)
+        {
+            return AddMove(new Coordinates(x, y));
+        }
+
+        public Coordinates ViewNextMove()
+        {
+            return Moves.Any() ? Moves.Peek() : new Coordinates(-1,-1);
         }
 
         public override Move MakeMove(Coordinates opponentMove)
@@ -23,8 +39,8 @@ namespace Engine.Players
                 return new Move(new Coordinates(-1,-1), Number);
             }
 
-            var move = new Move(new Coordinates(Moves.FirstOrDefault()), Number);
-            Moves.RemoveAt(0);
+            var move = new Move(Moves.Dequeue(), Number);
+            
             return move;
         }
 
