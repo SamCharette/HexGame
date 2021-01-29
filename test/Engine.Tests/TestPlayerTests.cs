@@ -18,14 +18,15 @@ namespace Engine.Tests
             var size = 5;
             var player1 = new TestPlayer(new PlayerConstructorArguments(size, PlayerNumber.FirstPlayer));
 
-            player1.Moves.Add(new Coordinates(0, 0));
-            player1.Moves.Add(new Coordinates(0, 1));
-            player1.Moves.Add(new Coordinates(0, 2));
-            player1.Moves.Add(new Coordinates(0, 3));
-            player1.Moves.Add(new Coordinates(0, 4));
+            player1
+                .AddMove(0, 0)
+                .AddMove(0, 1)
+                .AddMove(0, 2)
+                .AddMove(0, 3)
+                .AddMove(0, 4);
 
             Assume.That(player1.Moves.Count, Is.EqualTo(5));
-            Assume.That(player1.Moves.FirstOrDefault(), Is.EqualTo(new Coordinates(0,0)));
+            Assume.That(player1.ViewNextMove(), Is.EqualTo(new Coordinates(0,0)));
 
             // Act
             var move = player1.MakeMove(new Coordinates(-1, -1));
@@ -34,8 +35,7 @@ namespace Engine.Tests
             move.Should().BeEquivalentTo(new Move(new Coordinates(0,0), player1.Number));
             player1.Moves.Should().HaveCount(4, "because we had 5 moves and used one");
 
-            var movesLeft = player1.Moves.ToList();
-            player1.Moves.Any(x => x.Equals(new Coordinates(0, 0))).Should().BeFalse();
+            player1.Moves.Peek().Should().NotBeEquivalentTo(move);
 
         }
 

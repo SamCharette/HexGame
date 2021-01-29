@@ -95,20 +95,22 @@ namespace Engine.Tests
             var player1 = new TestPlayer(new PlayerConstructorArguments(size, PlayerNumber.FirstPlayer));
             var player2 = new TestPlayer(new PlayerConstructorArguments(size, PlayerNumber.SecondPlayer));
 
-            player1.Moves.Add(new Coordinates(0, 0));
-            player1.Moves.Add(new Coordinates(0, 1));
-            player1.Moves.Add(new Coordinates(0, 2));
-            player1.Moves.Add(new Coordinates(0, 3));
-            player1.Moves.Add(new Coordinates(0, 4));
+            player1
+                .AddMove(0, 0)
+                .AddMove(0, 1)
+                .AddMove(0, 2)
+                .AddMove(0, 3)
+                .AddMove(0, 4);
 
             Assume.That(player1.Moves.Count, Is.EqualTo(5));
 
-            player2.Moves.Add(new Coordinates(2, 0));
-            player2.Moves.Add(new Coordinates(3, 0));
-            player2.Moves.Add(new Coordinates(4, 0));
-            player2.Moves.Add(new Coordinates(2, 3));
-            player2.Moves.Add(new Coordinates(2, 2));
-
+            player2
+                .AddMove(2, 0)
+                .AddMove(3, 0)
+                .AddMove(4, 0)
+                .AddMove(2, 3)
+                .AddMove(2, 2);
+            
             Assume.That(player2.Moves.Count, Is.EqualTo(5));
 
             var game = new Game(size, player1, player2);
