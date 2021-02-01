@@ -14,7 +14,7 @@ namespace Engine.Players
             Assembly = assembly ?? Assembly.GetExecutingAssembly();
             PlayerTypes = GetPlayerTypes();
         }
-        private List<PlayerType> GetPlayerTypes()
+        public List<PlayerType> GetPlayerTypes()
         {
             var pType = typeof(BasePlayer);
 
