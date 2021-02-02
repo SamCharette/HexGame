@@ -4,16 +4,40 @@ using System.Linq;
 using Engine;
 using Engine.Players;
 using Engine.ValueTypes;
+using Microsoft.Extensions.CommandLineUtils;
 
 namespace ConsoleGame
 {
-    class Program
+    public class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
+        {
+            var app = new CommandLineApplication(throwOnUnexpectedArg: false);
+
+            CommandArgument size = null;
+            app.Command("size",
+                (target) =>
+                    size = target.Argument("size", "Enter size of board."));
+            app.HelpOption("-? | -h | --help");
+            app.OnExecute(() =>
+            {
+                var boardSize = 5;
+                var isSizeGood = Int32.TryParse(size.Value, out boardSize);
+                if (isSizeGood)
+                {
+                    StartGame(boardSize);
+                }
+                return 0;
+            });
+            app.Execute(args);
+
+           
+        }
+
+        public static void StartGame(int size)
         {
             var playerTypes = new PlayerFactory().GetPlayerTypes();
             
-            var size = 5;
             var player1Args = new PlayerConstructorArguments(size, PlayerNumber.FirstPlayer);
             var player1 = new PlayerFactory().CreatePlayerOfType(GetPlayerFromUserInput(playerTypes), player1Args);
             
