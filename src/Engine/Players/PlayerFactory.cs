@@ -28,7 +28,7 @@ namespace Engine.Players
                     .ToList();
         }
 
-        public BasePlayer CreatePlayerOfType(string playerType, PlayerConstructorArguments args)
+        public IPlayer CreatePlayerOfType(string playerType, PlayerConstructorArguments args)
         {
             if (PlayerTypes.Any(x => x.Name == playerType))
             {

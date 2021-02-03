@@ -138,8 +138,8 @@ namespace Engine.Tests
         public void StartGame_ShouldFailWithException_WhenBoardIsTooSmall()
         {
             var size = 11;
-            var player1 = new RandomPlayer(new PlayerConstructorArguments (11, PlayerNumber.FirstPlayer ));
-            var player2 = new RandomPlayer(new PlayerConstructorArguments (11, PlayerNumber.SecondPlayer ));
+            var player1 = new RandomPlayer(new PlayerConstructorArguments (size, PlayerNumber.FirstPlayer ));
+            var player2 = new RandomPlayer(new PlayerConstructorArguments (size, PlayerNumber.SecondPlayer ));
 
             Assert.Throws<ArgumentException>( () => new Game(1, player1, player2));
         }
@@ -148,7 +148,7 @@ namespace Engine.Tests
         public void StartGame_ShouldFailWithException_WhenPlayer1IsNull()
         {
             var size = 11;
-            var player2 = new RandomPlayer(new PlayerConstructorArguments (11, PlayerNumber.SecondPlayer ));
+            var player2 = new RandomPlayer(new PlayerConstructorArguments (size, PlayerNumber.SecondPlayer ));
 
             Action act = () => new Game(1, null, player2);
             act.Should().Throw<ArgumentException>("because player 1 is null");
@@ -158,7 +158,7 @@ namespace Engine.Tests
         public void StartGame_ShouldFailWithException_WhenPlayer2IsNull()
         {
             var size = 11;
-            var player1 = new RandomPlayer(new PlayerConstructorArguments (11, PlayerNumber.FirstPlayer ));
+            var player1 = new RandomPlayer(new PlayerConstructorArguments (size, PlayerNumber.FirstPlayer ));
 
             Action act = () => new Game(1, null, player1);
             act.Should().Throw<ArgumentException>("because player 2 is null");

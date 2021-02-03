@@ -5,17 +5,18 @@ using Engine;
 
 namespace Engine.Players
 {
-    public class RandomPlayer : BasePlayer
+    public class RandomPlayer : MustInitialize<PlayerConstructorArguments>, IPlayer
     {
         private Board Board;
-        public override string Type { get; protected set; } = "Random";
+        public PlayerNumber Number { get; }
+        public string Type { get; protected set; } = "Random";
 
         public RandomPlayer(PlayerConstructorArguments args) : base(args)
         {
             Board = new Board(args.BoardSize);
         }
 
-        public override Move MakeMove(Coordinates opponentMove)
+        public Move MakeMove(Coordinates opponentMove)
         {
             try
             {

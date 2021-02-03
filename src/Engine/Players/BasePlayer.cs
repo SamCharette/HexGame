@@ -6,6 +6,23 @@ using Engine.ValueTypes;
 namespace Engine.Players
 {
 
+    public interface IPlayer
+    {
+        public PlayerNumber Number { get; }
+        public string Type { get; }
+
+        public Move MakeMove(Coordinates opponentMove);
+
+    }
+
+    public abstract class MustInitialize<T>
+    {
+        protected MustInitialize(T parameters)
+        {
+
+        }
+    }
+
     public abstract class BasePlayer
     {
         public PlayerNumber Number { get; protected set; }
