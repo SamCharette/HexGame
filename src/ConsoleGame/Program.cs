@@ -4,7 +4,6 @@ using System.Linq;
 using Engine;
 using Engine.Players;
 using Engine.ValueTypes;
-using Microsoft.Extensions.CommandLineUtils;
 
 namespace ConsoleGame
 {
@@ -12,38 +11,40 @@ namespace ConsoleGame
     {
         public static void Main(string[] args)
         {
-            var app = new CommandLineApplication(throwOnUnexpectedArg: false);
-
-            CommandArgument size = null;
-            app.Command("size",
-                (target) =>
-                    size = target.Argument("size", "Enter size of board."));
-            app.HelpOption("-? | -h | --help");
-            app.OnExecute(() =>
+            if (args.Length < 3)
             {
-                var boardSize = 5;
-                var isSizeGood = Int32.TryParse(size.Value, out boardSize);
-                if (isSizeGood)
-                {
-                    StartGame(boardSize);
-                }
-                return 0;
-            });
-            app.Execute(args);
+                Console.WriteLine("Not enough arguments");
+                return;
+            }
 
-           
+            if (!int.TryParse(args[0], out var boardSize))
+            {
+                Console.WriteLine("First argument must be a number");
+            }
+            var playerTypes = new PlayerFactory().GetPlayerTypes();
+
+            if (!playerTypes.Select(x => x.Name).Contains(args[1]))
+            {
+                Console.WriteLine("Player 1 type '" + args[1] + "' doesn't exist");
+                return;
+            }
+            var player1Args = new PlayerConstructorArguments(boardSize, PlayerNumber.FirstPlayer);
+            var player1 = new PlayerFactory().CreatePlayerOfType(args[1], player1Args);
+
+            if (!playerTypes.Select(x => x.Name).Contains(args[2]))
+            {
+                Console.WriteLine("Player 2 type '" + args[2] + "' doesn't exist");
+                return;
+            }
+            var player2Args = new PlayerConstructorArguments(boardSize, PlayerNumber.SecondPlayer);
+            var player2 = new PlayerFactory().CreatePlayerOfType(args[2], player2Args);
+
+            StartGame(boardSize, player1, player2);
         }
 
-        public static void StartGame(int size)
+        public static void StartGame(int size, BasePlayer player1, BasePlayer player2)
         {
-            var playerTypes = new PlayerFactory().GetPlayerTypes();
             
-            var player1Args = new PlayerConstructorArguments(size, PlayerNumber.FirstPlayer);
-            var player1 = new PlayerFactory().CreatePlayerOfType(GetPlayerFromUserInput(playerTypes), player1Args);
-            
-            var player2Args = new PlayerConstructorArguments(size, PlayerNumber.SecondPlayer);
-            var player2 = new PlayerFactory().CreatePlayerOfType(GetPlayerFromUserInput(playerTypes), player1Args);
-
             var game = new Game(size, player1, player2);
             Console.WriteLine("Game is starting now.");
 
