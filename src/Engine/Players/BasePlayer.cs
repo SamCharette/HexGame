@@ -23,18 +23,6 @@ namespace Engine.Players
         }
     }
 
-    public abstract class BasePlayer
-    {
-        public PlayerNumber Number { get; protected set; }
-        public abstract string Type { get; protected set; }
-
-        protected BasePlayer(PlayerConstructorArguments parameters)
-        {
-            Number = parameters.PlayerNumber;
-        }
-
-        public abstract Move MakeMove(Coordinates opponentMove);
-    }
 
     public class PlayerConstructorArguments
     {
