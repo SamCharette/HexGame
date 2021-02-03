@@ -15,6 +15,7 @@ namespace Engine.Players
 
         public TestPlayer(PlayerConstructorArguments parameters) : base(parameters)
         {
+            Number = parameters.PlayerNumber;
         }
 
         public TestPlayer AddMove(Coordinates coordinstes)

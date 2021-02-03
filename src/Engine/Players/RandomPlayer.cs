@@ -14,6 +14,7 @@ namespace Engine.Players
         public RandomPlayer(PlayerConstructorArguments args) : base(args)
         {
             Board = new Board(args.BoardSize);
+            Number = args.PlayerNumber;
         }
 
         public Move MakeMove(Coordinates opponentMove)
