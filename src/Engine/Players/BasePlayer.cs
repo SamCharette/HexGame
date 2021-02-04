@@ -13,16 +13,8 @@ namespace Engine.Players
 
         public Move MakeMove(Coordinates opponentMove);
 
+        public void Configure(PlayerConstructorArguments args);
     }
-
-    public abstract class MustInitialize<T>
-    {
-        protected MustInitialize(T parameters)
-        {
-
-        }
-    }
-
 
     public class PlayerConstructorArguments
     {

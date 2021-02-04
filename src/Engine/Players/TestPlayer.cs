@@ -7,15 +7,15 @@ using Engine;
 
 namespace Engine.Players
 {
-    public class TestPlayer : MustInitialize<PlayerConstructorArguments>, IPlayer
+    public class TestPlayer : IPlayer
     {
         public Queue<Coordinates> Moves { get; set; } = new Queue<Coordinates>();
-        public PlayerNumber Number { get; }
+        public PlayerNumber Number { get; private set; }
         public string Type { get; protected set; } = "Test";
 
-        public TestPlayer(PlayerConstructorArguments parameters) : base(parameters)
+        public void Configure(PlayerConstructorArguments args)
         {
-            Number = parameters.PlayerNumber;
+            Number = args.PlayerNumber;
         }
 
         public TestPlayer AddMove(Coordinates coordinstes)

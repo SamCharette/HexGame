@@ -5,13 +5,13 @@ using Engine;
 
 namespace Engine.Players
 {
-    public class RandomPlayer : MustInitialize<PlayerConstructorArguments>, IPlayer
+    public class RandomPlayer : IPlayer
     {
         private Board Board;
-        public PlayerNumber Number { get; }
+        public PlayerNumber Number { get; private set; }
         public string Type { get; protected set; } = "Random";
 
-        public RandomPlayer(PlayerConstructorArguments args) : base(args)
+        public void Configure(PlayerConstructorArguments args)
         {
             Board = new Board(args.BoardSize);
             Number = args.PlayerNumber;

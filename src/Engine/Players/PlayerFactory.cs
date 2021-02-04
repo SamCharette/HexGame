@@ -37,8 +37,12 @@ namespace Engine.Players
                 {
                     return null;
                 }
-                dynamic player = (IPlayer)Activator.CreateInstance(type, args);
-                return player;
+                var player = (IPlayer)Activator.CreateInstance(type);
+                if (player != null)
+                {
+                    player.Configure(args);
+                    return player;
+                }
             }
 
             return null;
