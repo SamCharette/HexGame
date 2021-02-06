@@ -14,15 +14,15 @@ namespace Engine
         [JsonIgnore]
         public Board Board { get; private set; }
         public int Size => Board.Size;
-        public BasePlayer Player1 { get; private set; }
-        public BasePlayer Player2 { get; private set; }
+        public IPlayer Player1 { get; private set; }
+        public IPlayer Player2 { get; private set; }
         public PlayerNumber Winner { get; private set; }
         public List<Move> Moves { get; private set; }
 
-        private BasePlayer _currentPlayer;
+        private IPlayer _currentPlayer;
         private Move _lastMove;
 
-        public Game(int size, BasePlayer player1, BasePlayer player2)
+        public Game(int size, IPlayer player1, IPlayer player2)
         {
             Id = Guid.NewGuid();
             StartedOn = DateTime.Now;
@@ -100,7 +100,7 @@ namespace Engine
             EndedOn = DateTime.Now;
         }
 
-        private BasePlayer SwitchCurrentPlayer()
+        private IPlayer SwitchCurrentPlayer()
         {
             _currentPlayer = _currentPlayer.Number == PlayerNumber.FirstPlayer ? Player2 : Player1;
             return _currentPlayer;

@@ -6,17 +6,14 @@ using Engine.ValueTypes;
 namespace Engine.Players
 {
 
-    public abstract class BasePlayer
+    public interface IPlayer
     {
-        public PlayerNumber Number { get; protected set; }
-        public abstract string Type { get; protected set; }
+        public PlayerNumber Number { get; }
+        public string Type { get; }
 
-        protected BasePlayer(PlayerConstructorArguments parameters)
-        {
-            Number = parameters.PlayerNumber;
-        }
+        public Move MakeMove(Coordinates opponentMove);
 
-        public abstract Move MakeMove(Coordinates opponentMove);
+        public void Configure(PlayerConstructorArguments args);
     }
 
     public class PlayerConstructorArguments

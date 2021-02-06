@@ -14,9 +14,9 @@ namespace Engine.Players
             Assembly = assembly ?? Assembly.GetExecutingAssembly();
             PlayerTypes = GetPlayerTypes();
         }
-        private List<PlayerType> GetPlayerTypes()
+        public List<PlayerType> GetPlayerTypes()
         {
-            var pType = typeof(BasePlayer);
+            var pType = typeof(IPlayer);
 
             return  Assembly
                     .GetTypes()
@@ -28,7 +28,7 @@ namespace Engine.Players
                     .ToList();
         }
 
-        public BasePlayer CreatePlayerOfType(string playerType, PlayerConstructorArguments args)
+        public IPlayer CreatePlayerOfType(string playerType, PlayerConstructorArguments args)
         {
             if (PlayerTypes.Any(x => x.Name == playerType))
             {
@@ -37,8 +37,12 @@ namespace Engine.Players
                 {
                     return null;
                 }
-                dynamic player = (BasePlayer)Activator.CreateInstance(type, args);
-                return player;
+                var player = (IPlayer)Activator.CreateInstance(type);
+                if (player != null)
+                {
+                    player.Configure(args);
+                    return player;
+                }
             }
 
             return null;

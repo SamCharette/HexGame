@@ -7,13 +7,15 @@ using Engine;
 
 namespace Engine.Players
 {
-    public class TestPlayer : BasePlayer
+    public class TestPlayer : IPlayer
     {
         public Queue<Coordinates> Moves { get; set; } = new Queue<Coordinates>();
-        public override string Type { get; protected set; } = "Test";
+        public PlayerNumber Number { get; private set; }
+        public string Type { get; protected set; } = "Test";
 
-        public TestPlayer(PlayerConstructorArguments parameters) : base(parameters)
+        public void Configure(PlayerConstructorArguments args)
         {
+            Number = args.PlayerNumber;
         }
 
         public TestPlayer AddMove(Coordinates coordinstes)
@@ -32,7 +34,7 @@ namespace Engine.Players
             return Moves.Any() ? Moves.Peek() : new Coordinates(-1,-1);
         }
 
-        public override Move MakeMove(Coordinates opponentMove)
+        public Move MakeMove(Coordinates opponentMove)
         {
             if (!Moves.Any())
             {

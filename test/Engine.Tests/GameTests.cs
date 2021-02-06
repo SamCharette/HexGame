@@ -17,13 +17,37 @@ namespace Engine.Tests
 {
     public class GameTests
     {
+        public PlayerFactory PlayerFactory { get; set; }
+        [SetUp]
+        public void Setup()
+        {
+            PlayerFactory = new PlayerFactory();
+        }
         [Test]
         public void ToJson_ShouldProduceValidJson()
         {
             // Assemble
             var size = 11;
-            var player1 = new RandomPlayer(new PlayerConstructorArguments(size, PlayerNumber.FirstPlayer, "{\"Name\":\"Random\"}"));
-            var player2 = new RandomPlayer(new PlayerConstructorArguments(size, PlayerNumber.SecondPlayer, "{\"Name\":\"Randomer\"}"));
+            var player1 = 
+                PlayerFactory
+                    .CreatePlayerOfType(
+                        "RandomPlayer",
+                        new PlayerConstructorArguments(
+                            size, 
+                            PlayerNumber.FirstPlayer, 
+                            "{\"Name\":\"Random\"}"
+                            )
+                        );
+            var player2 = PlayerFactory
+                .CreatePlayerOfType(
+                    "RandomPlayer",
+                    new PlayerConstructorArguments(
+                        size,
+                        PlayerNumber.SecondPlayer,
+                        "{\"Name\":\"Random\"}"
+                    )
+                ); 
+            
             var game = new Game(size, player1, player2);
 
             // Act
@@ -42,8 +66,25 @@ namespace Engine.Tests
         {
             // Assemble
             var size = 5;
-            var player1 = new TestPlayer(new PlayerConstructorArguments(size, PlayerNumber.FirstPlayer));
-            var player2 = new TestPlayer(new PlayerConstructorArguments(size, PlayerNumber.SecondPlayer));
+            var player1 =
+                PlayerFactory
+                    .CreatePlayerOfType(
+                        "TestPlayer",
+                        new PlayerConstructorArguments(
+                            size,
+                            PlayerNumber.FirstPlayer,
+                            "{\"Name\":\"Test\"}"
+                        )
+                    );
+            var player2 = PlayerFactory
+                .CreatePlayerOfType(
+                    "TestPlayer",
+                    new PlayerConstructorArguments(
+                        size,
+                        PlayerNumber.SecondPlayer,
+                        "{\"Name\":\"Test\"}"
+                    )
+                );
 
             // Act
             var game = new Game(size, player1, player2);
@@ -59,9 +100,25 @@ namespace Engine.Tests
         {
             // Assemble
             var size = 5;
-            var player1 = new TestPlayer(new PlayerConstructorArguments(size, PlayerNumber.FirstPlayer));
-            var player2 = new TestPlayer(new PlayerConstructorArguments(size, PlayerNumber.SecondPlayer));
-
+            var player1 =
+                PlayerFactory
+                    .CreatePlayerOfType(
+                        "TestPlayer",
+                        new PlayerConstructorArguments(
+                            size,
+                            PlayerNumber.FirstPlayer,
+                            "{\"Name\":\"Test\"}"
+                        )
+                    );
+            var player2 = PlayerFactory
+                .CreatePlayerOfType(
+                    "TestPlayer",
+                    new PlayerConstructorArguments(
+                        size,
+                        PlayerNumber.SecondPlayer,
+                        "{\"Name\":\"Test\"}"
+                    )
+                );
             // Act
             var game = new Game(size, player1, player2);
 
@@ -75,9 +132,25 @@ namespace Engine.Tests
         {
             // Assemble
             var size = 5;
-            var player1 = new TestPlayer(new PlayerConstructorArguments(size, PlayerNumber.FirstPlayer));
-            var player2 = new TestPlayer(new PlayerConstructorArguments(size, PlayerNumber.SecondPlayer));
-
+            var player1 =
+                PlayerFactory
+                    .CreatePlayerOfType(
+                        "TestPlayer",
+                        new PlayerConstructorArguments(
+                            size,
+                            PlayerNumber.FirstPlayer,
+                            "{\"Name\":\"Random\"}"
+                        )
+                    );
+            var player2 = PlayerFactory
+                .CreatePlayerOfType(
+                    "TestPlayer",
+                    new PlayerConstructorArguments(
+                        size,
+                        PlayerNumber.SecondPlayer,
+                        "{\"Name\":\"Random\"}"
+                    )
+                );
             // Act
             var game = new Game(size, player1, player2);
             game.StartGame();
@@ -92,9 +165,25 @@ namespace Engine.Tests
         {
             // Assemble
             var size = 5;
-            var player1 = new TestPlayer(new PlayerConstructorArguments(size, PlayerNumber.FirstPlayer));
-            var player2 = new TestPlayer(new PlayerConstructorArguments(size, PlayerNumber.SecondPlayer));
-
+            var player1 =
+                PlayerFactory
+                    .CreatePlayerOfType(
+                        "TestPlayer",
+                        new PlayerConstructorArguments(
+                            size,
+                            PlayerNumber.FirstPlayer,
+                            "{\"Name\":\"Random\"}"
+                        )
+                    ) as TestPlayer;
+            var player2 = PlayerFactory
+                .CreatePlayerOfType(
+                    "TestPlayer",
+                    new PlayerConstructorArguments(
+                        size,
+                        PlayerNumber.SecondPlayer,
+                        "{\"Name\":\"Random\"}"
+                    )
+                ) as TestPlayer;
             player1
                 .AddMove(0, 0)
                 .AddMove(0, 1)
@@ -138,9 +227,25 @@ namespace Engine.Tests
         public void StartGame_ShouldFailWithException_WhenBoardIsTooSmall()
         {
             var size = 11;
-            var player1 = new RandomPlayer(new PlayerConstructorArguments (11, PlayerNumber.FirstPlayer ));
-            var player2 = new RandomPlayer(new PlayerConstructorArguments (11, PlayerNumber.SecondPlayer ));
-
+            var player1 =
+                PlayerFactory
+                    .CreatePlayerOfType(
+                        "RandomPlayer",
+                        new PlayerConstructorArguments(
+                            size,
+                            PlayerNumber.FirstPlayer,
+                            "{\"Name\":\"Random\"}"
+                        )
+                    );
+            var player2 = PlayerFactory
+                .CreatePlayerOfType(
+                    "RandomPlayer",
+                    new PlayerConstructorArguments(
+                        size,
+                        PlayerNumber.SecondPlayer,
+                        "{\"Name\":\"Random\"}"
+                    )
+                );
             Assert.Throws<ArgumentException>( () => new Game(1, player1, player2));
         }
 
@@ -148,8 +253,15 @@ namespace Engine.Tests
         public void StartGame_ShouldFailWithException_WhenPlayer1IsNull()
         {
             var size = 11;
-            var player2 = new RandomPlayer(new PlayerConstructorArguments (11, PlayerNumber.SecondPlayer ));
-
+            var player2 = PlayerFactory
+                .CreatePlayerOfType(
+                    "RandomPlayer",
+                    new PlayerConstructorArguments(
+                        size,
+                        PlayerNumber.SecondPlayer,
+                        "{\"Name\":\"Random\"}"
+                    )
+                );
             Action act = () => new Game(1, null, player2);
             act.Should().Throw<ArgumentException>("because player 1 is null");
         }
@@ -158,8 +270,17 @@ namespace Engine.Tests
         public void StartGame_ShouldFailWithException_WhenPlayer2IsNull()
         {
             var size = 11;
-            var player1 = new RandomPlayer(new PlayerConstructorArguments (11, PlayerNumber.FirstPlayer ));
-
+            var player1 =
+                PlayerFactory
+                    .CreatePlayerOfType(
+                        "RandomPlayer",
+                        new PlayerConstructorArguments(
+                            size,
+                            PlayerNumber.FirstPlayer,
+                            "{\"Name\":\"Random\"}"
+                        )
+                    );
+            
             Action act = () => new Game(1, null, player1);
             act.Should().Throw<ArgumentException>("because player 2 is null");
         }
