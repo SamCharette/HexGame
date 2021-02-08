@@ -1,0 +1,23 @@
+﻿@using Engine;
+<h3>MoveList</h3>
+
+<table>
+    <thead>
+    <tr>
+        <th>Player</th>
+        <th>Coordinates</th>
+    </tr>
+    </thead>
+    @foreach (var move in Moves)
+    {
+        <tr>
+            <td>
+                @move.PlayerNumber
+            </td>
+            <td>
+                @move.Coordinates
+            </td>
+        </tr>
+    }
+
+</table>

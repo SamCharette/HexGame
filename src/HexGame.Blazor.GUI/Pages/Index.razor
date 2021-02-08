@@ -1,0 +1,15 @@
+﻿@page "/"
+@using Engine;
+@using Engine.ValueTypes
+
+<h1>Hex Game</h1>
+
+GUI for the hex game stuffs
+
+<button @onclick="@StartGame">Start the game</button>
+
+@if(Winner != PlayerNumber.Unowned)
+    {
+        <h3>Winner is @Winner !</h3>
+        <MoveList Moves="@Moves"/>
+    }

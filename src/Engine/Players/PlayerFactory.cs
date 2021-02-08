@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Engine.ValueTypes;
 
 namespace Engine.Players
 {
@@ -9,16 +10,26 @@ namespace Engine.Players
     {
         public List<PlayerType> PlayerTypes { get; private set; }
         private Assembly Assembly { get; set; }
+        private PlayerBase _player;
+
+        public PlayerBase Build() => _player;
+
         public PlayerFactory(Assembly assembly = null)
         {
             Assembly = assembly ?? Assembly.GetExecutingAssembly();
-            PlayerTypes = GetPlayerTypes();
+            GetPlayerTypes();
         }
-        public List<PlayerType> GetPlayerTypes()
-        {
-            var pType = typeof(IPlayer);
 
-            return  Assembly
+        public static PlayerFactory Init()
+        {
+            return new PlayerFactory();
+        }
+
+        private void GetPlayerTypes()
+        {
+            var pType = typeof(PlayerBase);
+
+            PlayerTypes = Assembly
                     .GetTypes()
                     .Where(t => 
                         t.IsClass 
@@ -28,7 +39,37 @@ namespace Engine.Players
                     .ToList();
         }
 
-        public IPlayer CreatePlayerOfType(string playerType, PlayerConstructorArguments args)
+        public PlayerFactory NewOfType(string playerType)
+        {
+            var type = PlayerTypes.FirstOrDefault(x => x.Name == playerType)?.Type;
+            _player = (PlayerBase)Activator.CreateInstance(type);
+            return this;
+        }
+        public PlayerFactory ForBoardSize(int size)
+        {
+            _player.SetBoardSize(size);
+            return this;
+        }
+
+        public PlayerFactory WithConfiguration(Configuration config)
+        {
+            _player?.Configure(config);
+            return this;
+        }
+
+        public PlayerFactory AsPlayerOne()
+        {
+            _player?.SetPlayer(PlayerNumber.FirstPlayer);
+            return this;
+        }
+
+        public PlayerFactory AsPlayerTwo()
+        {
+            _player?.SetPlayer(PlayerNumber.SecondPlayer);
+            return this;
+        }
+
+        public PlayerBase CreatePlayerOfType(string playerType, PlayerConstructorArguments args)
         {
             if (PlayerTypes.Any(x => x.Name == playerType))
             {
@@ -37,7 +78,7 @@ namespace Engine.Players
                 {
                     return null;
                 }
-                var player = (IPlayer)Activator.CreateInstance(type);
+                var player = (PlayerBase)Activator.CreateInstance(type);
                 if (player != null)
                 {
                     player.Configure(args);
