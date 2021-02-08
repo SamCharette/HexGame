@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "ConsoleGame": {
-      "commandName": "Project",
-      "commandLineArgs": "11 RandomPlayer RandomPlayer"
-    }
-  }
-}
