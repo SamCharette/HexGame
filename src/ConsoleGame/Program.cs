@@ -42,7 +42,7 @@ namespace ConsoleGame
             StartGame(boardSize, player1, player2);
         }
 
-        public static void StartGame(int size, IPlayer player1, IPlayer player2)
+        public static void StartGame(int size, PlayerBase player1, PlayerBase player2)
         {
             
             var game = new Game(size, player1, player2);

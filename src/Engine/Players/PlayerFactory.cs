@@ -10,9 +10,9 @@ namespace Engine.Players
     {
         public List<PlayerType> PlayerTypes { get; private set; }
         private Assembly Assembly { get; set; }
-        private IPlayer _player = null;
+        private PlayerBase _player = null;
 
-        public IPlayer Build() => _player;
+        public PlayerBase Build() => _player;
 
         public PlayerFactory(Assembly assembly = null)
         {
@@ -42,7 +42,7 @@ namespace Engine.Players
         public PlayerFactory NewOfType(string playerType)
         {
             var type = PlayerTypes.FirstOrDefault(x => x.Name == playerType)?.Type;
-            _player = (IPlayer)Activator.CreateInstance(type);
+            _player = (PlayerBase)Activator.CreateInstance(type);
             return this;
         }
         public PlayerFactory ForBoardSize(int size)
@@ -69,7 +69,7 @@ namespace Engine.Players
             return this;
         }
 
-        public IPlayer CreatePlayerOfType(string playerType, PlayerConstructorArguments args)
+        public PlayerBase CreatePlayerOfType(string playerType, PlayerConstructorArguments args)
         {
             if (PlayerTypes.Any(x => x.Name == playerType))
             {
@@ -78,7 +78,7 @@ namespace Engine.Players
                 {
                     return null;
                 }
-                var player = (IPlayer)Activator.CreateInstance(type);
+                var player = (PlayerBase)Activator.CreateInstance(type);
                 if (player != null)
                 {
                     player.Configure(args);
