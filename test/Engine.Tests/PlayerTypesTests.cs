@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using System.Reflection;
-using Engine.Players;
+﻿using Engine.Players;
 using Engine.ValueTypes;
 using FluentAssertions;
 using NUnit.Framework;

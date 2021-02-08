@@ -10,7 +10,7 @@ namespace Engine.Players
     {
         public List<PlayerType> PlayerTypes { get; private set; }
         private Assembly Assembly { get; set; }
-        private PlayerBase _player = null;
+        private PlayerBase _player;
 
         public PlayerBase Build() => _player;
 

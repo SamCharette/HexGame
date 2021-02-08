@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Engine;
 using Engine.Players;
 using Engine.ValueTypes;
-using HexGame.Blazor.GUI.Shared;
-using Microsoft.AspNetCore.Components;
 
 namespace HexGame.Blazor.GUI.Pages
 {
