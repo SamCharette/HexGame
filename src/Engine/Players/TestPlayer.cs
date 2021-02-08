@@ -7,20 +7,23 @@ using Engine;
 
 namespace Engine.Players
 {
-    public class TestPlayer : IPlayer
+    public class TestPlayer : PlayerBase
     {
         public Queue<Coordinates> Moves { get; set; } = new Queue<Coordinates>();
-        public PlayerNumber Number { get; private set; }
-        public string Type { get; protected set; } = "Test";
 
-        public void Configure(PlayerConstructorArguments args)
+        public override void Configure(PlayerConstructorArguments args)
         {
             Number = args.PlayerNumber;
         }
 
-        public TestPlayer AddMove(Coordinates coordinstes)
+        public override void Configure(Configuration config)
         {
-            Moves.Enqueue(coordinstes);
+            throw new NotImplementedException();
+        }
+
+        public TestPlayer AddMove(Coordinates coordinates)
+        {
+            Moves.Enqueue(coordinates);
             return this;
         }
 
@@ -34,7 +37,7 @@ namespace Engine.Players
             return Moves.Any() ? Moves.Peek() : new Coordinates(-1,-1);
         }
 
-        public Move MakeMove(Coordinates opponentMove)
+        public override Move MakeMove(Coordinates opponentMove)
         {
             if (!Moves.Any())
             {
@@ -45,6 +48,7 @@ namespace Engine.Players
             
             return move;
         }
+
 
     }
 }

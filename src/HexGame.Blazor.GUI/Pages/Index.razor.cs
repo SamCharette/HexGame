@@ -17,13 +17,23 @@ namespace HexGame.Blazor.GUI.Pages
 
         public void StartGame()
         {
-            var player1Args = new PlayerConstructorArguments(11, PlayerNumber.FirstPlayer);
-            var player1 = new PlayerFactory().CreatePlayerOfType("RandomPlayer", player1Args);
+            var boardSize = 11;
 
-            var player2Args = new PlayerConstructorArguments(11, PlayerNumber.SecondPlayer);
-            var player2 = new PlayerFactory().CreatePlayerOfType("RandomPlayer", player2Args);
+            var player1 = PlayerFactory
+                .Init()
+                .NewOfType("RandomPlayer")
+                .AsPlayerOne()
+                .ForBoardSize(boardSize)
+                .Build();
 
-            var game = new Game(11, player1, player2);
+            var player2 = PlayerFactory
+                .Init()
+                .NewOfType("RandomPlayer")
+                .AsPlayerTwo()
+                .ForBoardSize(boardSize)
+                .Build();
+
+            var game = new Game(boardSize, player1, player2);
 
             game.StartGame();
 

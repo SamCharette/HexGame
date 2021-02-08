@@ -10,10 +10,35 @@ namespace Engine.Players
     {
         public PlayerNumber Number { get; }
         public string Type { get; }
+        public int Size { get; }
 
         public Move MakeMove(Coordinates opponentMove);
-
+        public void SetPlayer(PlayerNumber number);
+        public void SetBoardSize(int size);
         public void Configure(PlayerConstructorArguments args);
+        public void Configure(Configuration config);
+    }
+
+    public abstract class PlayerBase : IPlayer
+    {
+        public PlayerNumber Number { get; protected set; }
+        public string Type { get; protected set; }
+        public int Size { get; protected set; }
+        public abstract Move MakeMove(Coordinates opponentMove);
+
+        public void SetPlayer(PlayerNumber number)
+        {
+            Number = number;
+        }
+
+        public void SetBoardSize(int size)
+        {
+            Size = size;
+        }
+
+        public abstract void Configure(PlayerConstructorArguments args);
+
+        public abstract void Configure(Configuration config);
     }
 
     public class PlayerConstructorArguments

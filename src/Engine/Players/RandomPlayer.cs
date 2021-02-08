@@ -5,19 +5,22 @@ using Engine;
 
 namespace Engine.Players
 {
-    public class RandomPlayer : IPlayer
+    public class RandomPlayer : PlayerBase
     {
         private Board Board;
-        public PlayerNumber Number { get; private set; }
-        public string Type { get; protected set; } = "Random";
 
-        public void Configure(PlayerConstructorArguments args)
+        public override void Configure(PlayerConstructorArguments args)
         {
             Board = new Board(args.BoardSize);
             Number = args.PlayerNumber;
         }
 
-        public Move MakeMove(Coordinates opponentMove)
+        public override void Configure(Configuration config)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Move MakeMove(Coordinates opponentMove)
         {
             try
             {

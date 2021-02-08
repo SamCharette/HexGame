@@ -21,7 +21,7 @@ namespace ConsoleGame
             {
                 Console.WriteLine("First argument must be a number");
             }
-            var playerTypes = new PlayerFactory().GetPlayerTypes();
+            var playerTypes = new PlayerFactory().PlayerTypes;
 
             if (!playerTypes.Select(x => x.Name).Contains(args[1]))
             {

@@ -11,28 +11,18 @@ namespace Engine.Tests
 {
     public class TestPlayerTests
     {
-        public PlayerFactory PlayerFactory { get; set; }
-        [SetUp]
-        public void Setup()
-        {
-            PlayerFactory = new PlayerFactory();
-        }
-
         [Test]
         public void MakeMove_ShouldSendFirstMoveAndReduceTotalMoves_WhenMovesAreAvailable()
         {
             // Assemble
             var size = 5;
-            var player1 = 
-                PlayerFactory
-                    .CreatePlayerOfType(
-                        "TestPlayer",
-                        new PlayerConstructorArguments(
-                            size,
-                            PlayerNumber.FirstPlayer,
-                            "{\"Name\":\"Test\"}"
-                        )
-                    ) as TestPlayer;
+            var player1 = PlayerFactory
+                .Init()
+                .NewOfType("TestPlayer")
+                .AsPlayerOne()
+                .ForBoardSize(size)
+                .Build() as TestPlayer;
+
             player1
                 .AddMove(0, 0)
                 .AddMove(0, 1)
@@ -58,16 +48,13 @@ namespace Engine.Tests
         public void MakeMove_ShouldReturnConcedeMove_WhenPlayerHasNoMovesLeft()
         {
             // Assemble
-            var player1 = 
-                PlayerFactory
-                    .CreatePlayerOfType(
-                        "TestPlayer",
-                        new PlayerConstructorArguments(
-                            5,
-                            PlayerNumber.FirstPlayer,
-                            "{\"Name\":\"Random\"}"
-                        )
-                    ) as TestPlayer; 
+            var player1 = PlayerFactory
+                .Init()
+                .NewOfType("TestPlayer")
+                .AsPlayerOne()
+                .ForBoardSize(11)
+                .Build() as TestPlayer; 
+
             Assume.That(player1.Moves, Is.Empty);
 
             // Act
