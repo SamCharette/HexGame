@@ -1,7 +1,15 @@
 ﻿@page "/"
+@using Engine;
+@using Engine.ValueTypes
 
-<h1>Hello, world!</h1>
+<h1>Hex Game</h1>
 
-Welcome to your new app.
+GUI for the hex game stuffs
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+<button @onclick="@StartGame">Start the game</button>
+
+@if(Winner != PlayerNumber.Unowned)
+    {
+        <h3>Winner is @Winner !</h3>
+        <MoveList Moves="@Moves"/>
+    }

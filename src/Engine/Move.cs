@@ -7,7 +7,7 @@ namespace Engine
     public class Move
     {
         public Coordinates Coordinates { get; }
-        public  PlayerNumber PlayerNumber { get; }
+        public PlayerNumber PlayerNumber { get; }
         public List<Log> Logs { get; set; } 
 
         public Move(int x, int y, PlayerNumber playerNumber, List<Log> logs = null)
