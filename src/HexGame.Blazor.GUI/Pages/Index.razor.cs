@@ -19,6 +19,7 @@ namespace HexGame.Blazor.GUI.Pages
                 .NewOfType("RandomPlayer")
                 .AsPlayerOne()
                 .ForBoardSize(boardSize)
+                .WithConfiguration(null)
                 .Build();
 
             var player2 = PlayerFactory
@@ -26,6 +27,7 @@ namespace HexGame.Blazor.GUI.Pages
                 .NewOfType("RandomPlayer")
                 .AsPlayerTwo()
                 .ForBoardSize(boardSize)
+                .WithConfiguration(null)
                 .Build();
 
             var game = new Game(boardSize, player1, player2);

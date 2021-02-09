@@ -20,6 +20,7 @@ namespace Engine.Players
             throw new NotImplementedException();
         }
 
+
         public override Move MakeMove(Coordinates opponentMove)
         {
             try
