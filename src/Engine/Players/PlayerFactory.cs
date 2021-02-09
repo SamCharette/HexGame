@@ -69,7 +69,7 @@ namespace Engine.Players
             return this;
         }
 
-        public PlayerBase CreatePlayerOfType(string playerType, PlayerConstructorArguments args)
+        public PlayerBase CreatePlayerOfType(string playerType)
         {
             if (PlayerTypes.Any(x => x.Name == playerType))
             {
@@ -79,14 +79,9 @@ namespace Engine.Players
                     return null;
                 }
                 var player = (PlayerBase)Activator.CreateInstance(type);
-                if (player != null)
-                {
-                    player.Configure(args);
-                    return player;
-                }
             }
 
-            return null;
+            return _player;
         }
 
         public class PlayerType
