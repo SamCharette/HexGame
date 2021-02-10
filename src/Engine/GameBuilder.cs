@@ -43,11 +43,19 @@ namespace Engine
 
         public IAddPlayerTwo WithPlayerOne(PlayerBase player)
         {
+            if (player == null)
+            {
+                throw new ArgumentException("Player must not be null");
+            }
             _game.SetPlayer1(player);
             return this;
         }
         public IBuild WithPlayerTwo(PlayerBase player)
         {
+            if (player == null)
+            {
+                throw new ArgumentException("Player must not be null");
+            }
             _game.SetPlayer2(player);
             return this;
         }

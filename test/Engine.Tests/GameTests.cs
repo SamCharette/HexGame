@@ -1,15 +1,9 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using Engine.Players;
 using Engine.Tools;
 using Engine.ValueTypes;
 using FluentAssertions;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json.Schema;
-using Newtonsoft.Json.Schema.Generation;
 using NUnit.Framework;
 
 
@@ -24,22 +18,25 @@ namespace Engine.Tests
             // Assemble
             var size = 11;
 
-            var player1 = PlayerBuilder
-                .New()
-                .OfType("RandomPlayer")
-                .AsPlayerOne()
-                .ForBoardSize(size)
+            var game = GameBuilder.New()
+                .WithBoardSize(size)
+                .WithPlayerOne(
+                    PlayerBuilder
+                        .New()
+                        .OfType("RandomPlayer")
+                        .AsPlayerOne()
+                        .ForBoardSize(size)
+                        .Build()
+                    )
+                .WithPlayerTwo(
+                    PlayerBuilder
+                        .New()
+                        .OfType("RandomPlayer")
+                        .AsPlayerTwo()
+                        .ForBoardSize(size)
+                        .Build()
+                    )
                 .Build();
-
-            var player2 = PlayerBuilder
-                .New()
-                .OfType("RandomPlayer")
-                .AsPlayerTwo()
-                .ForBoardSize(size)
-                .Build();
-
-
-            var game = new Game(size, player1, player2);
 
             // Act
             game.StartGame();
@@ -51,58 +48,33 @@ namespace Engine.Tests
 
         }
 
-
-        [Test]
-        public void GameConstructor_ShouldProperlyAssignPlayers()
-        {
-            // Assemble
-            var size = 5;
-           
-            var player1 = PlayerBuilder
-                .New()
-                .OfType("TestPlayer")
-                .AsPlayerOne()
-                .ForBoardSize(size)
-                .Build();
-
-            var player2 = PlayerBuilder
-                .New()
-                .OfType("TestPlayer")
-                .AsPlayerTwo()
-                .ForBoardSize(size)
-                .Build();
-
-
-            // Act
-            var game = new Game(size, player1, player2);
-
-            // Assert
-            game.Player1.Should().BeEquivalentTo(player1, "because they are the same");
-            game.Player2.Should().NotBeEquivalentTo(player1, "because player 2 is not player 1");
-        }
-
-
         [Test]
         public void IsGameOver_ShouldBeFalse_WhenGameStarts()
         {
             // Assemble
             var size = 5;
-            var player1 = PlayerBuilder
-                .New()
-                .OfType("TestPlayer")
-                .AsPlayerOne()
-                .ForBoardSize(size)
-                .Build();
-
-            var player2 = PlayerBuilder
-                .New()
-                .OfType("TestPlayer")
-                .AsPlayerTwo()
-                .ForBoardSize(size)
-                .Build();
 
             // Act
-            var game = new Game(size, player1, player2);
+            var game = GameBuilder.New()
+                .WithBoardSize(size)
+                .WithPlayerOne(
+                    PlayerBuilder
+                        .New()
+                        .OfType("TestPlayer")
+                        .AsPlayerOne()
+                        .ForBoardSize(size)
+                        .Build()
+                )
+                .WithPlayerTwo(
+                    PlayerBuilder
+                        .New()
+                        .OfType("TestPlayer")
+                        .AsPlayerTwo()
+                        .ForBoardSize(size)
+                        .Build()
+                )
+                .Build();
+
 
             // Assert
             game.IsGameOver().Should().BeFalse("because the game hasn't started");
@@ -114,23 +86,28 @@ namespace Engine.Tests
         {
             // Assemble
             var size = 5;
-           
-            var player1 = PlayerBuilder
-                .New()
-                .OfType("TestPlayer")
-                .AsPlayerOne()
-                .ForBoardSize(size)
-                .Build();
 
-            var player2 = PlayerBuilder
-                .New()
-                .OfType("TestPlayer")
-                .AsPlayerTwo()
-                .ForBoardSize(size)
-                .Build();
 
             // Act
-            var game = new Game(size, player1, player2);
+            var game = GameBuilder.New()
+                .WithBoardSize(size)
+                .WithPlayerOne(
+                    PlayerBuilder
+                        .New()
+                        .OfType("TestPlayer")
+                        .AsPlayerOne()
+                        .ForBoardSize(size)
+                        .Build()
+                )
+                .WithPlayerTwo(
+                    PlayerBuilder
+                        .New()
+                        .OfType("TestPlayer")
+                        .AsPlayerTwo()
+                        .ForBoardSize(size)
+                        .Build()
+                )
+                .Build();
             game.StartGame();
 
             // Assert
@@ -175,7 +152,16 @@ namespace Engine.Tests
             
             Assume.That(player2.Moves.Count, Is.EqualTo(5));
 
-            var game = new Game(size, player1, player2);
+            var game = GameBuilder.New()
+                .WithBoardSize(size)
+                .WithPlayerOne(
+                    player1
+                )
+                .WithPlayerTwo(
+                    player2
+                )
+                .Build();
+
             game.Moves.Should().HaveCount(0, "because the game hasn't started yet");
             game.Board.UnownedHexes().Should().HaveCount(size * size, "because the game hasn't begun");
 
@@ -199,7 +185,7 @@ namespace Engine.Tests
         [Test]
         public void StartGame_ShouldFailWithException_WhenBoardIsTooSmall()
         {
-            var size = 11;
+            var size = 1;
             var player1 = PlayerBuilder
                 .New()
                 .OfType("RandomPlayer")
@@ -213,7 +199,21 @@ namespace Engine.Tests
                 .AsPlayerTwo()
                 .ForBoardSize(size)
                 .Build();
-            Assert.Throws<ArgumentException>( () => new Game(1, player1, player2));
+
+
+
+            Action act = () =>
+                GameBuilder.New()
+                    .WithBoardSize(size)
+                    .WithPlayerOne(
+                        player1
+                    )
+                    .WithPlayerTwo(
+                        player2
+                    )
+                    .Build();
+
+            act.Should().Throw<ArgumentException>("because board is too small");
         }
 
         [Test]
@@ -227,8 +227,18 @@ namespace Engine.Tests
                 .AsPlayerTwo()
                 .ForBoardSize(size)
                 .Build();
-  
-            Action act = () => new Game(1, null, player2);
+
+            Action act = () =>
+                GameBuilder.New()
+                    .WithBoardSize(size)
+                    .WithPlayerOne(
+                        null
+                    )
+                    .WithPlayerTwo(
+                        player2
+                    )
+                    .Build();
+
             act.Should().Throw<ArgumentException>("because player 1 is null");
         }
 
@@ -243,7 +253,17 @@ namespace Engine.Tests
                 .ForBoardSize(size)
                 .Build();
 
-            Action act = () => new Game(1, null, player1);
+            Action act = () =>
+                GameBuilder.New()
+                    .WithBoardSize(size)
+                    .WithPlayerOne(
+                        player1
+                    )
+                    .WithPlayerTwo(
+                        null
+                    )
+                    .Build();
+
             act.Should().Throw<ArgumentException>("because player 2 is null");
         }
     }

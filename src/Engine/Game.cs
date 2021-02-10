@@ -22,20 +22,6 @@ namespace Engine
         private PlayerBase _currentPlayer;
         private Move _lastMove;
 
-        public Game(int size, PlayerBase player1, PlayerBase player2)
-        {
-            Id = Guid.NewGuid();
-            StartedOn = DateTime.Now;
-            Board = new Board(size);
-            Player1 = player1;
-            Player2 = player2;
-            Winner = PlayerNumber.Unowned;
-            _currentPlayer = player1;
-            _lastMove = new Move(new Coordinates(-1, -1), PlayerNumber.Unowned);
-
-            Moves = new List<Move>();
-        }
-
         internal Game()
         {
             Id = Guid.NewGuid();
