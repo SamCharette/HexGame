@@ -7,16 +7,20 @@ using Engine.Players;
 
 namespace Engine
 {
-    public interface INewGame
+
+    public interface IAddPlayerOne
     {
-        public IConfigureGame New();
+        public IAddPlayerTwo WithPlayerOne(PlayerBase player);
+    }
+
+    public interface IAddPlayerTwo
+    {
+        public IBuild WithPlayerTwo(PlayerBase player);
     }
 
     public interface IConfigureGame
     {
-        public IConfigureGame WithPlayerOne(PlayerBase player);
-        public IConfigureGame WithPlayerTwo(PlayerBase player);
-        public IConfigureGame WithBoardSize(int size);
+        public IAddPlayerOne WithBoardSize(int size);
     }
 
     public interface IBuild
@@ -24,29 +28,34 @@ namespace Engine
         public Game Build();
     }
 
-    public class GameBuilder : INewGame, IConfigureGame, IBuild
+    public class GameBuilder : IConfigureGame, IBuild, IAddPlayerOne, IAddPlayerTwo
     {
-        private Game _game;
+        private static Game _game = new Game();
 
         public Game Build() => _game;
 
-        public IConfigureGame New()
+        
+        public static GameBuilder New()
         {
-            _game = new Game();
-            return this;
+            return new GameBuilder();
         }
+        
 
-        public IConfigureGame WithPlayerOne(PlayerBase player)
+        public IAddPlayerTwo WithPlayerOne(PlayerBase player)
         {
             _game.SetPlayer1(player);
             return this;
         }
-        public IConfigureGame WithPlayerTwo(PlayerBase player)
+        public IBuild WithPlayerTwo(PlayerBase player)
         {
             _game.SetPlayer2(player);
             return this;
         }
 
-
+        public IAddPlayerOne WithBoardSize(int size)
+        {
+            _game.SetBoardSize(size);
+            return this;
+        }
     }
 }

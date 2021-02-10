@@ -44,6 +44,11 @@ namespace Engine
             Moves = new List<Move>();
         }
 
+        internal void SetBoardSize(int size)
+        {
+            Board = new Board(size);
+        }
+
         internal void SetPlayer1(PlayerBase player)
         {
             Player1 = player;
@@ -57,6 +62,7 @@ namespace Engine
         public void StartGame()
         {
 
+            _currentPlayer = Player1;
             do
             {
                 _lastMove = _currentPlayer.MakeMove(_lastMove.Coordinates);

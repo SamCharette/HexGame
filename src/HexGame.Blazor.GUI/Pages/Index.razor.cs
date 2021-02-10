@@ -14,23 +14,29 @@ namespace HexGame.Blazor.GUI.Pages
         {
             var boardSize = 11;
 
-            var player1 = PlayerBuilder
+            var game = GameBuilder
                 .New()
-                .OfType("RandomPlayer")
-                .AsPlayerOne()
-                .ForBoardSize(boardSize)
-                .WithConfiguration(null)
+                .WithBoardSize(boardSize)
+                .WithPlayerOne(
+                    PlayerBuilder
+                        .New()
+                        .OfType("RandomPlayer")
+                        .AsPlayerOne()
+                        .ForBoardSize(boardSize)
+                        .WithConfiguration(null)
+                        .Build()
+                )
+                .WithPlayerTwo(
+                    PlayerBuilder
+                        .New()
+                        .OfType("RandomPlayer")
+                        .AsPlayerTwo()
+                        .ForBoardSize(boardSize)
+                        .WithConfiguration(null)
+                        .Build()
+                )
                 .Build();
 
-            var player2 = PlayerBuilder
-                .New()
-                .OfType("RandomPlayer")
-                .AsPlayerTwo()
-                .ForBoardSize(boardSize)
-                .WithConfiguration(null)
-                .Build();
-
-            var game = new Game(boardSize, player1, player2);
 
             game.StartGame();
 
