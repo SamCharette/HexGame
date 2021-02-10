@@ -10,11 +10,13 @@ namespace HexGame.Blazor.GUI.Pages
         public List<Move> Moves { get; set; } = new List<Move>();
         public PlayerNumber Winner { get; private set; } = PlayerNumber.Unowned;
 
+        public Game game { get; set; }
+
         public void StartGame()
         {
             var boardSize = 11;
 
-            var game = GameBuilder
+            game = GameBuilder
                 .New()
                 .WithBoardSize(boardSize)
                 .WithPlayerOne(
