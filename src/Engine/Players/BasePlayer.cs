@@ -23,22 +23,7 @@ namespace Engine.Players
             Size = size;
         }
 
-        public abstract void Configure(PlayerConstructorArguments args);
-
         public abstract void Configure(Configuration config);
     }
 
-    public class PlayerConstructorArguments
-    {
-        public PlayerNumber PlayerNumber { get; private set; }
-        public int BoardSize { get; private set; }
-        public Configuration Configuration { get; private set; }
-
-        public PlayerConstructorArguments(int size, PlayerNumber number, string config = "")
-        {
-            PlayerNumber = number;
-            BoardSize = size;
-            Configuration = Configuration.GetConfiguration(config);
-        }
-    }
 }

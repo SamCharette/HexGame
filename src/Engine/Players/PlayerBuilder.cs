@@ -6,7 +6,7 @@ using Engine.ValueTypes;
 
 namespace Engine.Players
 {
-    public class PlayerFactory
+    public class PlayerBuilder
     {
         public List<PlayerType> PlayerTypes { get; private set; }
         private Assembly Assembly { get; set; }
@@ -14,15 +14,15 @@ namespace Engine.Players
 
         public PlayerBase Build() => _player;
 
-        public PlayerFactory(Assembly assembly = null)
+        public PlayerBuilder(Assembly assembly = null)
         {
             Assembly = assembly ?? Assembly.GetExecutingAssembly();
             GetPlayerTypes();
         }
 
-        public static PlayerFactory Init()
+        public static PlayerBuilder New()
         {
-            return new PlayerFactory();
+            return new PlayerBuilder();
         }
 
         private void GetPlayerTypes()
@@ -39,37 +39,37 @@ namespace Engine.Players
                     .ToList();
         }
 
-        public PlayerFactory NewOfType(string playerType)
+        public PlayerBuilder OfType(string playerType)
         {
             var type = PlayerTypes.FirstOrDefault(x => x.Name == playerType)?.Type;
             _player = (PlayerBase)Activator.CreateInstance(type);
             return this;
         }
-        public PlayerFactory ForBoardSize(int size)
+        public PlayerBuilder ForBoardSize(int size)
         {
             _player.SetBoardSize(size);
             return this;
         }
 
-        public PlayerFactory WithConfiguration(Configuration config)
+        public PlayerBuilder WithConfiguration(Configuration config)
         {
             _player?.Configure(config);
             return this;
         }
 
-        public PlayerFactory AsPlayerOne()
+        public PlayerBuilder AsPlayerOne()
         {
             _player?.SetPlayer(PlayerNumber.FirstPlayer);
             return this;
         }
 
-        public PlayerFactory AsPlayerTwo()
+        public PlayerBuilder AsPlayerTwo()
         {
             _player?.SetPlayer(PlayerNumber.SecondPlayer);
             return this;
         }
 
-        public PlayerBase CreatePlayerOfType(string playerType, PlayerConstructorArguments args)
+        public PlayerBase CreatePlayerOfType(string playerType)
         {
             if (PlayerTypes.Any(x => x.Name == playerType))
             {
@@ -79,14 +79,9 @@ namespace Engine.Players
                     return null;
                 }
                 var player = (PlayerBase)Activator.CreateInstance(type);
-                if (player != null)
-                {
-                    player.Configure(args);
-                    return player;
-                }
             }
 
-            return null;
+            return _player;
         }
 
         public class PlayerType
