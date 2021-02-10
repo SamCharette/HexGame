@@ -6,7 +6,7 @@ using Engine.ValueTypes;
 
 namespace Engine.Players
 {
-    public class PlayerFactory
+    public class PlayerBuilder
     {
         public List<PlayerType> PlayerTypes { get; private set; }
         private Assembly Assembly { get; set; }
@@ -14,15 +14,15 @@ namespace Engine.Players
 
         public PlayerBase Build() => _player;
 
-        public PlayerFactory(Assembly assembly = null)
+        public PlayerBuilder(Assembly assembly = null)
         {
             Assembly = assembly ?? Assembly.GetExecutingAssembly();
             GetPlayerTypes();
         }
 
-        public static PlayerFactory Init()
+        public static PlayerBuilder Init()
         {
-            return new PlayerFactory();
+            return new PlayerBuilder();
         }
 
         private void GetPlayerTypes()
@@ -39,31 +39,31 @@ namespace Engine.Players
                     .ToList();
         }
 
-        public PlayerFactory NewOfType(string playerType)
+        public PlayerBuilder NewOfType(string playerType)
         {
             var type = PlayerTypes.FirstOrDefault(x => x.Name == playerType)?.Type;
             _player = (PlayerBase)Activator.CreateInstance(type);
             return this;
         }
-        public PlayerFactory ForBoardSize(int size)
+        public PlayerBuilder ForBoardSize(int size)
         {
             _player.SetBoardSize(size);
             return this;
         }
 
-        public PlayerFactory WithConfiguration(Configuration config)
+        public PlayerBuilder WithConfiguration(Configuration config)
         {
             _player?.Configure(config);
             return this;
         }
 
-        public PlayerFactory AsPlayerOne()
+        public PlayerBuilder AsPlayerOne()
         {
             _player?.SetPlayer(PlayerNumber.FirstPlayer);
             return this;
         }
 
-        public PlayerFactory AsPlayerTwo()
+        public PlayerBuilder AsPlayerTwo()
         {
             _player?.SetPlayer(PlayerNumber.SecondPlayer);
             return this;

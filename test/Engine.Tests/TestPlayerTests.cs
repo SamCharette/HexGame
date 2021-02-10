@@ -16,7 +16,7 @@ namespace Engine.Tests
         {
             // Assemble
             var size = 5;
-            var player1 = PlayerFactory
+            var player1 = PlayerBuilder
                 .Init()
                 .NewOfType("TestPlayer")
                 .AsPlayerOne()
@@ -48,7 +48,7 @@ namespace Engine.Tests
         public void MakeMove_ShouldReturnConcedeMove_WhenPlayerHasNoMovesLeft()
         {
             // Assemble
-            var player1 = PlayerFactory
+            var player1 = PlayerBuilder
                 .Init()
                 .NewOfType("TestPlayer")
                 .AsPlayerOne()

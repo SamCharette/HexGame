@@ -14,14 +14,14 @@ namespace HexGame.Blazor.GUI.Pages
         {
             var boardSize = 11;
 
-            var player1 = PlayerFactory
+            var player1 = PlayerBuilder
                 .Init()
                 .NewOfType("RandomPlayer")
                 .AsPlayerOne()
                 .ForBoardSize(boardSize)
                 .Build();
 
-            var player2 = PlayerFactory
+            var player2 = PlayerBuilder
                 .Init()
                 .NewOfType("RandomPlayer")
                 .AsPlayerTwo()

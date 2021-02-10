@@ -24,14 +24,14 @@ namespace Engine.Tests
             // Assemble
             var size = 11;
 
-            var player1 = PlayerFactory
+            var player1 = PlayerBuilder
                 .Init()
                 .NewOfType("RandomPlayer")
                 .AsPlayerOne()
                 .ForBoardSize(size)
                 .Build();
 
-            var player2 = PlayerFactory
+            var player2 = PlayerBuilder
                 .Init()
                 .NewOfType("RandomPlayer")
                 .AsPlayerTwo()
@@ -58,14 +58,14 @@ namespace Engine.Tests
             // Assemble
             var size = 5;
            
-            var player1 = PlayerFactory
+            var player1 = PlayerBuilder
                 .Init()
                 .NewOfType("TestPlayer")
                 .AsPlayerOne()
                 .ForBoardSize(size)
                 .Build();
 
-            var player2 = PlayerFactory
+            var player2 = PlayerBuilder
                 .Init()
                 .NewOfType("TestPlayer")
                 .AsPlayerTwo()
@@ -87,14 +87,14 @@ namespace Engine.Tests
         {
             // Assemble
             var size = 5;
-            var player1 = PlayerFactory
+            var player1 = PlayerBuilder
                 .Init()
                 .NewOfType("TestPlayer")
                 .AsPlayerOne()
                 .ForBoardSize(size)
                 .Build();
 
-            var player2 = PlayerFactory
+            var player2 = PlayerBuilder
                 .Init()
                 .NewOfType("TestPlayer")
                 .AsPlayerTwo()
@@ -115,14 +115,14 @@ namespace Engine.Tests
             // Assemble
             var size = 5;
            
-            var player1 = PlayerFactory
+            var player1 = PlayerBuilder
                 .Init()
                 .NewOfType("TestPlayer")
                 .AsPlayerOne()
                 .ForBoardSize(size)
                 .Build();
 
-            var player2 = PlayerFactory
+            var player2 = PlayerBuilder
                 .Init()
                 .NewOfType("TestPlayer")
                 .AsPlayerTwo()
@@ -143,14 +143,14 @@ namespace Engine.Tests
         {
             // Assemble
             var size = 5;
-            var player1 = PlayerFactory
+            var player1 = PlayerBuilder
                 .Init()
                 .NewOfType("TestPlayer")
                 .AsPlayerOne()
                 .ForBoardSize(size)
                 .Build() as TestPlayer;
             
-            var player2 = PlayerFactory
+            var player2 = PlayerBuilder
                 .Init()
                 .NewOfType("TestPlayer")
                 .AsPlayerTwo()
@@ -200,14 +200,14 @@ namespace Engine.Tests
         public void StartGame_ShouldFailWithException_WhenBoardIsTooSmall()
         {
             var size = 11;
-            var player1 = PlayerFactory
+            var player1 = PlayerBuilder
                 .Init()
                 .NewOfType("RandomPlayer")
                 .AsPlayerOne()
                 .ForBoardSize(size)
                 .Build();
 
-            var player2 = PlayerFactory
+            var player2 = PlayerBuilder
                 .Init()
                 .NewOfType("RandomPlayer")
                 .AsPlayerTwo()
@@ -221,7 +221,7 @@ namespace Engine.Tests
         {
             var size = 11;
   
-            var player2 = PlayerFactory
+            var player2 = PlayerBuilder
                 .Init()
                 .NewOfType("RandomPlayer")
                 .AsPlayerTwo()
@@ -236,7 +236,7 @@ namespace Engine.Tests
         public void StartGame_ShouldFailWithException_WhenPlayer2IsNull()
         {
             var size = 11;
-            var player1 = PlayerFactory
+            var player1 = PlayerBuilder
                 .Init()
                 .NewOfType("RandomPlayer")
                 .AsPlayerOne()
