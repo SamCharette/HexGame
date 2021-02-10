@@ -36,6 +36,24 @@ namespace Engine
             Moves = new List<Move>();
         }
 
+        internal Game()
+        {
+            Id = Guid.NewGuid();
+            Winner = PlayerNumber.Unowned;
+            _lastMove = new Move(new Coordinates(-1, -1), PlayerNumber.Unowned);
+            Moves = new List<Move>();
+        }
+
+        internal void SetPlayer1(PlayerBase player)
+        {
+            Player1 = player;
+        }
+
+        internal void SetPlayer2(PlayerBase player)
+        {
+            Player2 = player;
+        }
+
         public void StartGame()
         {
 

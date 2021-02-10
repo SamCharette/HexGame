@@ -9,15 +9,9 @@ namespace Engine.Players
     {
         private Board Board;
 
-        public override void Configure(PlayerConstructorArguments args)
-        {
-            Board = new Board(args.BoardSize);
-            Number = args.PlayerNumber;
-        }
-
         public override void Configure(Configuration config)
         {
-            throw new NotImplementedException();
+            Board = new Board(Size);
         }
 
         public override Move MakeMove(Coordinates opponentMove)

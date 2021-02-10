@@ -11,11 +11,6 @@ namespace Engine.Players
     {
         public Queue<Coordinates> Moves { get; set; } = new Queue<Coordinates>();
 
-        public override void Configure(PlayerConstructorArguments args)
-        {
-            Number = args.PlayerNumber;
-        }
-
         public override void Configure(Configuration config)
         {
             throw new NotImplementedException();
