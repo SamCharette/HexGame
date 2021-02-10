@@ -17,8 +17,8 @@ namespace Engine.Tests
             // Assemble
             var size = 5;
             var player1 = PlayerBuilder
-                .Init()
-                .NewOfType("TestPlayer")
+                .New()
+                .OfType("TestPlayer")
                 .AsPlayerOne()
                 .ForBoardSize(size)
                 .Build() as TestPlayer;
@@ -49,8 +49,8 @@ namespace Engine.Tests
         {
             // Assemble
             var player1 = PlayerBuilder
-                .Init()
-                .NewOfType("TestPlayer")
+                .New()
+                .OfType("TestPlayer")
                 .AsPlayerOne()
                 .ForBoardSize(11)
                 .Build() as TestPlayer; 

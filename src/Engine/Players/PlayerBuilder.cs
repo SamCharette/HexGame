@@ -20,7 +20,7 @@ namespace Engine.Players
             GetPlayerTypes();
         }
 
-        public static PlayerBuilder Init()
+        public static PlayerBuilder New()
         {
             return new PlayerBuilder();
         }
@@ -39,7 +39,7 @@ namespace Engine.Players
                     .ToList();
         }
 
-        public PlayerBuilder NewOfType(string playerType)
+        public PlayerBuilder OfType(string playerType)
         {
             var type = PlayerTypes.FirstOrDefault(x => x.Name == playerType)?.Type;
             _player = (PlayerBase)Activator.CreateInstance(type);

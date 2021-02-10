@@ -25,15 +25,15 @@ namespace Engine.Tests
             var size = 11;
 
             var player1 = PlayerBuilder
-                .Init()
-                .NewOfType("RandomPlayer")
+                .New()
+                .OfType("RandomPlayer")
                 .AsPlayerOne()
                 .ForBoardSize(size)
                 .Build();
 
             var player2 = PlayerBuilder
-                .Init()
-                .NewOfType("RandomPlayer")
+                .New()
+                .OfType("RandomPlayer")
                 .AsPlayerTwo()
                 .ForBoardSize(size)
                 .Build();
@@ -59,15 +59,15 @@ namespace Engine.Tests
             var size = 5;
            
             var player1 = PlayerBuilder
-                .Init()
-                .NewOfType("TestPlayer")
+                .New()
+                .OfType("TestPlayer")
                 .AsPlayerOne()
                 .ForBoardSize(size)
                 .Build();
 
             var player2 = PlayerBuilder
-                .Init()
-                .NewOfType("TestPlayer")
+                .New()
+                .OfType("TestPlayer")
                 .AsPlayerTwo()
                 .ForBoardSize(size)
                 .Build();
@@ -88,15 +88,15 @@ namespace Engine.Tests
             // Assemble
             var size = 5;
             var player1 = PlayerBuilder
-                .Init()
-                .NewOfType("TestPlayer")
+                .New()
+                .OfType("TestPlayer")
                 .AsPlayerOne()
                 .ForBoardSize(size)
                 .Build();
 
             var player2 = PlayerBuilder
-                .Init()
-                .NewOfType("TestPlayer")
+                .New()
+                .OfType("TestPlayer")
                 .AsPlayerTwo()
                 .ForBoardSize(size)
                 .Build();
@@ -116,15 +116,15 @@ namespace Engine.Tests
             var size = 5;
            
             var player1 = PlayerBuilder
-                .Init()
-                .NewOfType("TestPlayer")
+                .New()
+                .OfType("TestPlayer")
                 .AsPlayerOne()
                 .ForBoardSize(size)
                 .Build();
 
             var player2 = PlayerBuilder
-                .Init()
-                .NewOfType("TestPlayer")
+                .New()
+                .OfType("TestPlayer")
                 .AsPlayerTwo()
                 .ForBoardSize(size)
                 .Build();
@@ -144,15 +144,15 @@ namespace Engine.Tests
             // Assemble
             var size = 5;
             var player1 = PlayerBuilder
-                .Init()
-                .NewOfType("TestPlayer")
+                .New()
+                .OfType("TestPlayer")
                 .AsPlayerOne()
                 .ForBoardSize(size)
                 .Build() as TestPlayer;
             
             var player2 = PlayerBuilder
-                .Init()
-                .NewOfType("TestPlayer")
+                .New()
+                .OfType("TestPlayer")
                 .AsPlayerTwo()
                 .ForBoardSize(size)
                 .Build() as TestPlayer;
@@ -201,15 +201,15 @@ namespace Engine.Tests
         {
             var size = 11;
             var player1 = PlayerBuilder
-                .Init()
-                .NewOfType("RandomPlayer")
+                .New()
+                .OfType("RandomPlayer")
                 .AsPlayerOne()
                 .ForBoardSize(size)
                 .Build();
 
             var player2 = PlayerBuilder
-                .Init()
-                .NewOfType("RandomPlayer")
+                .New()
+                .OfType("RandomPlayer")
                 .AsPlayerTwo()
                 .ForBoardSize(size)
                 .Build();
@@ -222,8 +222,8 @@ namespace Engine.Tests
             var size = 11;
   
             var player2 = PlayerBuilder
-                .Init()
-                .NewOfType("RandomPlayer")
+                .New()
+                .OfType("RandomPlayer")
                 .AsPlayerTwo()
                 .ForBoardSize(size)
                 .Build();
@@ -237,8 +237,8 @@ namespace Engine.Tests
         {
             var size = 11;
             var player1 = PlayerBuilder
-                .Init()
-                .NewOfType("RandomPlayer")
+                .New()
+                .OfType("RandomPlayer")
                 .AsPlayerOne()
                 .ForBoardSize(size)
                 .Build();

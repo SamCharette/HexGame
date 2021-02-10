@@ -15,15 +15,15 @@ namespace HexGame.Blazor.GUI.Pages
             var boardSize = 11;
 
             var player1 = PlayerBuilder
-                .Init()
-                .NewOfType("RandomPlayer")
+                .New()
+                .OfType("RandomPlayer")
                 .AsPlayerOne()
                 .ForBoardSize(boardSize)
                 .Build();
 
             var player2 = PlayerBuilder
-                .Init()
-                .NewOfType("RandomPlayer")
+                .New()
+                .OfType("RandomPlayer")
                 .AsPlayerTwo()
                 .ForBoardSize(boardSize)
                 .Build();
