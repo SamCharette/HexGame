@@ -22,26 +22,17 @@ namespace Engine
         private PlayerBase _currentPlayer;
         private Move _lastMove;
 
-        public Game(int size, PlayerBase player1, PlayerBase player2)
-        {
-            Id = Guid.NewGuid();
-            StartedOn = DateTime.Now;
-            Board = new Board(size);
-            Player1 = player1;
-            Player2 = player2;
-            Winner = PlayerNumber.Unowned;
-            _currentPlayer = player1;
-            _lastMove = new Move(new Coordinates(-1, -1), PlayerNumber.Unowned);
-
-            Moves = new List<Move>();
-        }
-
         internal Game()
         {
             Id = Guid.NewGuid();
             Winner = PlayerNumber.Unowned;
             _lastMove = new Move(new Coordinates(-1, -1), PlayerNumber.Unowned);
             Moves = new List<Move>();
+        }
+
+        internal void SetBoardSize(int size)
+        {
+            Board = new Board(size);
         }
 
         internal void SetPlayer1(PlayerBase player)
@@ -57,6 +48,7 @@ namespace Engine
         public void StartGame()
         {
 
+            _currentPlayer = Player1;
             do
             {
                 _lastMove = _currentPlayer.MakeMove(_lastMove.Coordinates);

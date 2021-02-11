@@ -10,25 +10,35 @@ namespace HexGame.Blazor.GUI.Pages
         public List<Move> Moves { get; set; } = new List<Move>();
         public PlayerNumber Winner { get; private set; } = PlayerNumber.Unowned;
 
+        public Game game { get; set; }
+
         public void StartGame()
         {
             var boardSize = 11;
 
-            var player1 = PlayerBuilder
+            game = GameBuilder
                 .New()
-                .OfType("RandomPlayer")
-                .AsPlayerOne()
-                .ForBoardSize(boardSize)
+                .WithBoardSize(boardSize)
+                .WithPlayerOne(
+                    PlayerBuilder
+                        .New()
+                        .OfType("RandomPlayer")
+                        .AsPlayerOne()
+                        .ForBoardSize(boardSize)
+                        .WithConfiguration(null)
+                        .Build()
+                )
+                .WithPlayerTwo(
+                    PlayerBuilder
+                        .New()
+                        .OfType("RandomPlayer")
+                        .AsPlayerTwo()
+                        .ForBoardSize(boardSize)
+                        .WithConfiguration(null)
+                        .Build()
+                )
                 .Build();
 
-            var player2 = PlayerBuilder
-                .New()
-                .OfType("RandomPlayer")
-                .AsPlayerTwo()
-                .ForBoardSize(boardSize)
-                .Build();
-
-            var game = new Game(boardSize, player1, player2);
 
             game.StartGame();
 

@@ -14,6 +14,7 @@ namespace Engine.Players
             Board = new Board(Size);
         }
 
+
         public override Move MakeMove(Coordinates opponentMove)
         {
             try
