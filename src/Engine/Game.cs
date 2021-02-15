@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Engine.Players;
 using Engine.ValueTypes;
 using Newtonsoft.Json;
@@ -48,7 +49,7 @@ namespace Engine
             Player2 = player;
         }
 
-        public void StartGame()
+        public async Task StartGame()
         {
             OnGameStart();
             _currentPlayer = Player1;

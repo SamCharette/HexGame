@@ -21,4 +21,8 @@ GUI for the hex game stuffs
     {
         <h3>The Game Has Started</h3>
     }
+    @foreach (var move in Moves)
+    {
+        <MoveComponent Move="@move"></MoveComponent>
+    }
 }

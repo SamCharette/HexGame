@@ -23,6 +23,7 @@ namespace Engine.Players
             {
                 SetOpponentPosition(opponentMove);
                 var randomGenerator = new Random();
+                Thread.Sleep(randomGenerator.Next(1,5) * 500);
 
                 var openHexes =
                     Board

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Engine;
 using Engine.Players;
 using Engine.ValueTypes;
@@ -10,7 +11,7 @@ namespace HexGame.Blazor.GUI.Pages
 {
     public partial class Index
     {
-        public MoveList MoveList { get; set; }
+        public List<Move> Moves { get; set; } = new List<Move>();
         private bool _gameHasStarted = false;
         private bool _gameHasCompleted = false;
 
@@ -20,8 +21,9 @@ namespace HexGame.Blazor.GUI.Pages
         public Game game { get; set; }
 
 
-        protected override void OnInitialized()
-        {
+        protected override Task OnInitializedAsync()
+        {   
+       
             var boardSize = 11;
 
             game = GameBuilder
@@ -50,11 +52,17 @@ namespace HexGame.Blazor.GUI.Pages
             game.OnGameStart += GameHasStarted;
             game.OnMoveMade += (sender, move) => MoveWasMade(move);
             game.OnGameEnd += GameHasEnded;
+
+            return base.OnInitializedAsync();
         }
 
-        public void MoveWasMade(Move move)
+        public async void MoveWasMade(Move move)
         {
-            this.MoveList.AddMove(move);
+            Moves.Add(move);
+            await InvokeAsync(() =>
+            {
+                base.StateHasChanged();
+            });
             JsRuntime.InvokeAsync<string>("console.log", "Move was made: " + move);
         }
 
@@ -69,13 +77,14 @@ namespace HexGame.Blazor.GUI.Pages
         {
             _gameHasCompleted = false;
             _gameHasStarted = true;
-            MoveList = new MoveList();
+            Moves = new List<Move>();
+            _winner = PlayerNumber.Unowned;
             JsRuntime.InvokeAsync<string>("console.log", "Game has started...");
         }
 
-        public void StartGame()
+        public async void StartGame()
         {
-            game.StartGame();
+            await game.StartGame();
         }
     }
 }
