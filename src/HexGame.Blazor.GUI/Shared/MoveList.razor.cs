@@ -9,6 +9,11 @@ namespace HexGame.Blazor.GUI.Shared
 {
     public partial class MoveList
     {
-        [Parameter] public List<Move> Moves { get; set; }
+        public List<Move> Moves { get; set; } = new List<Move>();
+
+        public void AddMove(Move move)
+        {
+            Moves.Add(move);
+        }
     }
 }

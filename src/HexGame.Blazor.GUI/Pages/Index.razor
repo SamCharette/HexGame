@@ -1,15 +1,24 @@
 ﻿@page "/"
 @using Engine;
 @using Engine.ValueTypes
+@inject IJSRuntime JsRuntime
 
 <h1>Hex Game</h1>
 
 GUI for the hex game stuffs
 
 <button @onclick="@StartGame">Start the game</button>
-<DisplayHex></DisplayHex>
-@if(Winner != PlayerNumber.Unowned)
+
+
+@if (_gameHasStarted)
+{
+
+    if (_gameHasCompleted)
     {
-        <h3>Winner is @Winner !</h3>
-        <MoveList Moves="@Moves"/>
+        <h3>Winner is @_winner !</h3>
     }
+    else
+    {
+        <h3>The Game Has Started</h3>
+    }
+}

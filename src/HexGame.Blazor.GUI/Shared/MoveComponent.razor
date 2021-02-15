@@ -1,0 +1,12 @@
+﻿@using Engine
+
+<div>
+    <div class="row">
+        <div class="col-md-6">@Move.PlayerNumber</div>
+        <div class="col-md-6">@Move.Coordinates</div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public Move Move { get; set; }
+}
