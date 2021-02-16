@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Engine;
 using Engine.Players;
@@ -59,11 +60,11 @@ namespace HexGame.Blazor.GUI.Pages
         public async void MoveWasMade(Move move)
         {
             Moves.Add(move);
+            JsRuntime.InvokeAsync<string>("console.log", "Move was made: " + move);
             await InvokeAsync(() =>
             {
-                base.StateHasChanged();
+                StateHasChanged();
             });
-            JsRuntime.InvokeAsync<string>("console.log", "Move was made: " + move);
         }
 
         public void GameHasEnded()
@@ -84,7 +85,8 @@ namespace HexGame.Blazor.GUI.Pages
 
         public async void StartGame()
         {
-            await game.StartGame();
+            var gameThread = new Thread(game.StartGame);
+            gameThread.Start();
         }
     }
 }

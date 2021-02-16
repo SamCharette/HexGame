@@ -49,7 +49,7 @@ namespace Engine
             Player2 = player;
         }
 
-        public async Task StartGame()
+        public void StartGame()
         {
             OnGameStart();
             _currentPlayer = Player1;
