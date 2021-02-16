@@ -27,6 +27,8 @@ namespace HexGame.Blazor.GUI.Pages
        
             var boardSize = 11;
 
+            var configuration = new Configuration("{\"MinimumWaitTime\":\"1000\",\"MaximumWaitTime\":\"5000\"}");
+
             game = GameBuilder
                 .New()
                 .WithBoardSize(boardSize)
@@ -36,7 +38,7 @@ namespace HexGame.Blazor.GUI.Pages
                         .OfType("RandomPlayer")
                         .AsPlayerOne()
                         .ForBoardSize(boardSize)
-                        .WithConfiguration(null)
+                        .WithConfiguration(configuration)
                         .Build()
                 )
                 .WithPlayerTwo(
@@ -45,7 +47,7 @@ namespace HexGame.Blazor.GUI.Pages
                         .OfType("RandomPlayer")
                         .AsPlayerTwo()
                         .ForBoardSize(boardSize)
-                        .WithConfiguration(null)
+                        .WithConfiguration(configuration)
                         .Build()
                 )
                 .Build();

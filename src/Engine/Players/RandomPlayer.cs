@@ -10,10 +10,25 @@ namespace Engine.Players
     public class RandomPlayer : PlayerBase
     {
         private Board Board;
+        private int _minimumWaitTime;
+        private int _maximumWaitTime;
+        private bool _hasWaitTime = true;
 
         public override void Configure(Configuration config)
         {
             Board = new Board(Size);
+            if (config != null)
+            {
+                _minimumWaitTime = config.GetIntFromOption("MinimumWaitTime");
+                _maximumWaitTime = config.GetIntFromOption("MaximumWaitTime");
+
+                if (_minimumWaitTime < 0 || _maximumWaitTime < _minimumWaitTime)
+                {
+                    _maximumWaitTime = 0;
+                    _minimumWaitTime = 0;
+                    _hasWaitTime = false;
+                }
+            }
         }
 
 
@@ -23,7 +38,11 @@ namespace Engine.Players
             {
                 SetOpponentPosition(opponentMove);
                 var randomGenerator = new Random();
-                Thread.Sleep(randomGenerator.Next(1,5) * 500);
+
+                if (_hasWaitTime)
+                {
+                    Thread.Sleep(randomGenerator.Next(_minimumWaitTime, _maximumWaitTime));
+                }
 
                 var openHexes =
                     Board
