@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Engine.ValueTypes;
 using Engine;
 
@@ -21,6 +23,8 @@ namespace Engine.Players
             {
                 SetOpponentPosition(opponentMove);
                 var randomGenerator = new Random();
+                Thread.Sleep(randomGenerator.Next(1,5) * 500);
+
                 var openHexes =
                     Board
                         .Hexes

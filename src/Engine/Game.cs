@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Engine.Players;
 using Engine.ValueTypes;
 using Newtonsoft.Json;
@@ -11,8 +12,7 @@ namespace Engine
         public Guid Id { get; private set; } // Simply here for when recording games
         public DateTime StartedOn { get; private set; }
         public DateTime? EndedOn { get; private set; }
-        [JsonIgnore]
-        public Board Board { get; private set; }
+        [JsonIgnore] public Board Board { get; private set; }
         public int Size => Board.Size;
         public PlayerBase Player1 { get; private set; }
         public PlayerBase Player2 { get; private set; }
@@ -21,6 +21,10 @@ namespace Engine
 
         private PlayerBase _currentPlayer;
         private Move _lastMove;
+
+        public event EventHandler<Move> OnMoveMade = delegate {};
+        public event Action OnGameStart = delegate { };
+        public event Action OnGameEnd = delegate { };
 
         internal Game()
         {
@@ -47,7 +51,7 @@ namespace Engine
 
         public void StartGame()
         {
-
+            OnGameStart();
             _currentPlayer = Player1;
             do
             {
@@ -90,6 +94,8 @@ namespace Engine
             {
                 Winner = move.PlayerNumber;
             }
+
+            OnMoveMade(this, move);
         }
 
         private bool IsValidMove(Move move)
@@ -107,6 +113,7 @@ namespace Engine
 
         public void EndGame()
         {
+            OnGameEnd();
             EndedOn = DateTime.Now;
         }
 
