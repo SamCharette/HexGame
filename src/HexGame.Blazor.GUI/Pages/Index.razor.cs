@@ -85,8 +85,9 @@ namespace HexGame.Blazor.GUI.Pages
 
         public async void StartGame()
         {
-            var gameThread = new Thread(game.StartGame);
-            gameThread.Start();
+            //var gameThread = new Thread(game.StartGame);
+            //gameThread.Start();
+            Task.Run(() => game.StartGame());
         }
     }
 }
