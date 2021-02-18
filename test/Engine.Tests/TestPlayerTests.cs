@@ -44,7 +44,7 @@ namespace Engine.Tests
         public void MakeMove_ShouldSendFirstMoveAndReduceTotalMoves_WhenMovesAreAvailableFromConfig()
         {
             var configPlayer1 =
-                "{ \"Move\":\"0 0\",\"Move\":\"0 1\",\"Move\":\"0 2\",\"Move\":\"0 3\",\"Move\":\"0 4\"}";
+                "{\"Moves\":[{\"Value\":\"0 0\",\"Value\":\"0 1\",\"Value\":\"0 2\",\"Value\":\"0 3\",\"Value\":\"0 4\"}]}";
 
             // Assemble
             var size = 5;
