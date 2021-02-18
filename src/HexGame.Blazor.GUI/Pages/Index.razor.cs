@@ -27,7 +27,7 @@ namespace HexGame.Blazor.GUI.Pages
        
             var boardSize = 11;
 
-            var configuration = new Configuration("{\"MinimumWaitTime\":\"1000\",\"MaximumWaitTime\":\"5000\"}");
+            var configuration = "{\"MinimumWaitTime\":\"1000\",\"MaximumWaitTime\":\"5000\"}";
 
             game = GameBuilder
                 .New()

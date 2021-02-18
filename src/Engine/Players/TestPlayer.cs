@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using Engine.ValueTypes;
 using Engine;
+using Newtonsoft.Json.Linq;
 
 namespace Engine.Players
 {
@@ -11,9 +13,23 @@ namespace Engine.Players
     {
         public Queue<Coordinates> Moves { get; set; } = new Queue<Coordinates>();
 
-        public override void Configure(Configuration config)
+        public override void Configure(string data)
         {
-            throw new NotImplementedException();
+            var regex = new Regex("([0-9]+[\\w\\s][0-9]+)$", RegexOptions.None, TimeSpan.FromSeconds(1));
+            JObject movesToMake = JObject.Parse(data);
+            foreach (var move in movesToMake)
+            {
+                if (move.Key.ToUpper() == "MOVE")
+                {
+                    if (regex.IsMatch((string) move.Value))
+                    {
+                        var bits = move.Value.ToString().Split(' ');
+                        var x = int.Parse(bits[0]);
+                        var y = int.Parse(bits[1]);
+                        AddMove(new Coordinates(x, y));
+                    }
+                }
+            }
         }
 
         public TestPlayer AddMove(Coordinates coordinates)

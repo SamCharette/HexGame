@@ -23,7 +23,7 @@ namespace Engine.Players
             Size = size;
         }
 
-        public abstract void Configure(Configuration config);
+        public abstract void Configure(string data);
     }
 
 }

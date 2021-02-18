@@ -51,9 +51,9 @@ namespace Engine.Players
             return this;
         }
 
-        public PlayerBuilder WithConfiguration(Configuration config)
+        public PlayerBuilder WithConfiguration(string data)
         {
-            _player?.Configure(config);
+            _player?.Configure(data);
             return this;
         }
 

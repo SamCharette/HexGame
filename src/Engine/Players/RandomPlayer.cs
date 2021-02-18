@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Engine.ValueTypes;
 using Engine;
+using Newtonsoft.Json.Linq;
 
 namespace Engine.Players
 {
@@ -14,20 +15,20 @@ namespace Engine.Players
         private int _maximumWaitTime;
         private bool _hasWaitTime = true;
 
-        public override void Configure(Configuration config)
+        public override void Configure(string data)
         {
             Board = new Board(Size);
-            if (config != null)
-            {
-                _minimumWaitTime = config.GetIntFromOption("MinimumWaitTime");
-                _maximumWaitTime = config.GetIntFromOption("MaximumWaitTime");
 
-                if (_minimumWaitTime < 0 || _maximumWaitTime < _minimumWaitTime)
-                {
-                    _maximumWaitTime = 0;
-                    _minimumWaitTime = 0;
-                    _hasWaitTime = false;
-                }
+            JObject config = JObject.Parse(data);
+
+            _minimumWaitTime = (int)config["MinimumWaitTime"];
+            _maximumWaitTime = (int)config["MaximumWaitTime"];
+
+            if (_minimumWaitTime < 0 || _maximumWaitTime < _minimumWaitTime)
+            {
+                _maximumWaitTime = 0;
+                _minimumWaitTime = 0;
+                _hasWaitTime = false;
             }
         }
 
