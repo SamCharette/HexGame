@@ -14,7 +14,7 @@ namespace Engine.Players
     {
         private class MoveList
         {
-            public List<JsonMove> Moves { get; set; } = new List<JsonMove>();
+            public List<string> Moves { get; set; } = new List<string>();
         }
 
         private class JsonMove
@@ -28,13 +28,13 @@ namespace Engine.Players
         {
             var regex = new Regex("([0-9]+[\\w\\s][0-9]+)$", RegexOptions.None, TimeSpan.FromSeconds(1));
 
-            var moveList = JsonConvert.DeserializeObject<MoveList>(data);
+            var moveList = JsonConvert.DeserializeObject<List<string>>(data);
 
-            foreach (var move in moveList.Moves)
+            foreach (var move in moveList)
             {
-                if (regex.IsMatch(move.Value))
+                if (regex.IsMatch(move))
                 {
-                    var bits = move.Value.ToString().Split(' ');
+                    var bits = move.ToString().Split(' ');
                     var x = int.Parse(bits[0]);
                     var y = int.Parse(bits[1]);
                     AddMove(new Coordinates(x, y));
